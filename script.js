@@ -25,10 +25,10 @@ var mapDetails={
 
 //a set of variables to controle visual elements 
 var cloud={type:'parallax-item',
-	endX:2,endY:2,image:"https://www.onlygfx.com/wp-content/uploads/2016/10/watercolor-cloud-1-1024x664.png",deapth:0.4};
-var tree = {type:'parallax-item',endX:2,endY:3,image:"https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",deapth:0.7};
-var ground = {type:'parallax-item',endX:0,endY:0,image:"https://lh3.googleusercontent.com/aO8HFLBG1vc9hMFzqH4S6xmKKTqkUE3ewboN3tDtlUwmK0Rh3qDbMS0XzWRCOgjCDLnDrK0H77efxhw7AXucDA=s400",deapth:1, colitions:1};
-var player = {type:'player',endX:1,endY:2,image:"https://images.onlinelabels.com/images/clip-art/10binary/square%20spiral-131341.png",deapth:1, x:1, Y:11};
+	endX:2,endY:2,image:"https://www.onlygfx.com/wp-content/uploads/2016/10/watercolor-cloud-1-1024x664.png",movementDepth:0.4, transformerX:0, transformerY:40, layerDepth:0.4};
+var tree = {type:'parallax-item',endX:2,endY:3,image:"https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",movementDepth:0.7, transformerX:40, transformerY:0, layerDepth:0.7};
+var ground = {type:'parallax-item',endX:0,endY:0,image:"https://lh3.googleusercontent.com/aO8HFLBG1vc9hMFzqH4S6xmKKTqkUE3ewboN3tDtlUwmK0Rh3qDbMS0XzWRCOgjCDLnDrK0H77efxhw7AXucDA=s400",movementDepth:1, colitions:1, transformerX:0, transformerY:0, layerDepth:1};
+var player = {type:'player',endX:1,endY:2,image:"https://images.onlinelabels.com/images/clip-art/10binary/square%20spiral-131341.png",movementDepth:1, x:1, Y:11, transformerX:0, transformerY:0, layerDepth:1};
 
 var map = [
 [cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -48,15 +48,21 @@ var map = [
 
 
 //function to add an image to the visual grid
-function populate(gridX,gridY,{endX = 0,endY = 0,image = 0, deapth = 0, object = 0, transformX = 0, transformY = 0}){
+function populate(gridX,gridY,{endX = 0,endY = 0,image = 0, movementDepth = 0, object = 0, transformX = 0, transformY = 0, layerDepth=0}){
 	//optinal prameters code addapted from this stackOverflow thred: https://stackoverflow.com/questions/12797118/how-can-i-declare-optional-function-parameters-in-javascript?fbclid=IwAR2XMH66g0JjiFVgJuBMWBnzsN5agbqAoiahNb1mKIP2a73ONfZ8CJEtzAQ
 	image = image || object.image;
-	deapth = deapth || object.deapth;
+	movementDepth = movementDepth || object.movementDepth;
 	endX = endX || object.endX + gridX;
 	endY = endY || object.endY + gridY;
+	transformX = transformX || object.transformerX;
+	transformY = transformY || object.transformerY;
+	layerDepth = layerDepth || object.layerDepth;
 	
 	var elument = document.getElementById("cell-"+gridY+","+ gridX);
-	elument.dataset.depth = deapth;
+	elument.dataset.depth = movementDepth;
+	elument.dataset.transformerX = transformX;
+	elument.dataset.transformerY = transformY;
+	elument.style.zIndex = 1000 * layerDepth;
 	elument.innerHTML = '<img src="'+ image +'">';
 	if (endX - gridX > 1 || endY - gridY > 1){
 		elument.style = 'grid-area: ' + gridY + ' / ' + gridX + ' / ' + endY + ' / ' + endX + ';';
@@ -117,8 +123,9 @@ function move(change){
 	mapDetails.changingX = mapDetails.changingX+change;
 	mapDetails.movingItemsArray.forEach(function(item, counter){
 		var depth = parseFloat(item.dataset.depth, 10);
-		item.style.zIndex = 1000*depth;
-		item.style.transform ='translate( '+ mapDetails.changingX*depth +'px, 0px)';
+		var transformerX = parseFloat(item.dataset.transformerX, 10);
+		var transformerY = parseFloat(item.dataset.transformerY, 10);
+		item.style.transform ='translate( '+ (mapDetails.changingX + transformerX)*depth +'px, ' + transformerY + 'px)';
 	});
 }
 
@@ -148,6 +155,7 @@ function movingSetup(){
 	playerMovement.XCordenents = playerXGrid * 1;
 
 	hanndleKeyboredClick;
+	move(0);
 	window.addEventListener("keypress",hanndleKeyboredClick);
 }
 
@@ -161,9 +169,9 @@ function falling(){
 	//console.log(mapDetails.currentXGrid-1);
 	
 	if (speed >= 0){
-	if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].deapth != playerMovement.HTMLArray[0].dataset.depth || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
+	if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
 		checker = 1;
-		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
+		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+ mapDetails.changingY +'px)';
 		window.requestAnimationFrame(falling);
 	}else{
 		speed = 0;
@@ -171,10 +179,10 @@ function falling(){
 		//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
 		mapDetails.changingY = necesseryShift;
 		
-		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
+		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
 	}
 	}else{
-		if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].deapth != playerMovement.HTMLArray[0].dataset.depth) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
+		if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
 			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
 			window.requestAnimationFrame(falling);
 		}else{speed = 0;}
@@ -219,10 +227,9 @@ var hanndleKeyboredClick = function(click){
 	}
 	}
 	
-	
-	if (document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null){
-		
-		if ((document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid).dataset.depth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents){
+	//document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null
+	if (map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1] != 0){	
+		if ((map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents){
 			move(movement);
 			
 		}else{
