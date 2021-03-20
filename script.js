@@ -9,7 +9,10 @@ var playerMovement={
 	aceleration:0,
 	Xpx:0,
 	Ypx:0,
-	moveSpeed: 10
+	moveSpeed: 10,
+	speed:0,
+	fall:0,
+	movement: 0
 };
 var mapDetails={
 	map2DArray: 0,
@@ -20,30 +23,127 @@ var mapDetails={
 	pixleSizeX: 32,
 	pixleSizeY:23,
 	currentXGrid:0,
-	currentYGrid:0
+	currentYGrid:0,
+	checker:0,
+	checkerY:0
 };
 
 //a set of variables to controle visual elements 
-var cloud={type:'parallax-item',
-	endX:2,endY:2,image:"https://www.onlygfx.com/wp-content/uploads/2016/10/watercolor-cloud-1-1024x664.png",movementDepth:0.4, transformerX:0, transformerY:40, layerDepth:0.4};
-var tree = {type:'parallax-item',endX:2,endY:3,image:"https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",movementDepth:0.7, transformerX:40, transformerY:0, layerDepth:0.7};
-var ground = {type:'parallax-item',endX:0,endY:0,image:"https://lh3.googleusercontent.com/aO8HFLBG1vc9hMFzqH4S6xmKKTqkUE3ewboN3tDtlUwmK0Rh3qDbMS0XzWRCOgjCDLnDrK0H77efxhw7AXucDA=s400",movementDepth:1, colitions:1, transformerX:0, transformerY:0, layerDepth:1};
-var player = {type:'player',endX:1,endY:2,image:"https://images.onlinelabels.com/images/clip-art/10binary/square%20spiral-131341.png",movementDepth:1, x:1, Y:11, transformerX:0, transformerY:0, layerDepth:1};
+function makeCloud({
+	type='parallax-item',
+	endX=2,
+	endY=2,
+	image="https://www.onlygfx.com/wp-content/uploads/2016/10/watercolor-cloud-1-1024x664.png",
+	movementDepth=0.4,
+	transformerX=0,
+	transformerY=40,
+	colitions=0,
+	layerDepth=0.4
+}){
+	var cloud={
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth
+	};
+	return cloud;
+}
+
+function makeTree({
+	type='parallax-item',
+	endX=2,
+	endY=3,
+	image="https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",
+	movementDepth=0.7, 
+	transformerX=40, 
+	transformerY=0,
+	colitions=0,	
+	layerDepth=0.7
+}){ 
+	var tree = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth
+	};
+	return tree;
+}
+function makeGround({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://lh3.googleusercontent.com/aO8HFLBG1vc9hMFzqH4S6xmKKTqkUE3ewboN3tDtlUwmK0Rh3qDbMS0XzWRCOgjCDLnDrK0H77efxhw7AXucDA=s400",
+	movementDepth=1, 
+	colitions=1, 
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1
+}){ 
+	var ground = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth
+	};
+	return ground;
+}
+function makePlayer({
+	type = 'player',
+	endX = 1,
+	endY = 2,
+	image = "https://images.onlinelabels.com/images/clip-art/10binary/square%20spiral-131341.png",
+	movementDepth=1, 
+	x = 1, 
+	Y = 11, 
+	transformerX = 0, 
+	transformerY = 0, 
+	layerDepth = 1
+}){ 
+	var player = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		x:x, 
+		Y:Y, 
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth
+	};
+	return player;
+}
+
 
 var map = [
-[cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,cloud,0,0,0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[ground,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,cloud,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,0,0,0,0,0,0,0,0,0,0,0,cloud,0,0,0,0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,cloud,0,0,0,0,0,0,cloud,0,0,0,0,0,0,cloud,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,0,0,0,0,0,0,0,0,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,tree,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,player,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,0,0,0,ground,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,ground],
-[ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground,ground]
+[makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makePlayer({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),0,0,0,makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})]
 ];
 
 
@@ -114,8 +214,6 @@ function loadMap(map){
 }
 
 
-
-
 //gameplay/movement setup
 
 //function that takes each moving item and moves it by change pixles
@@ -159,22 +257,22 @@ function movingSetup(){
 	window.addEventListener("keypress",hanndleKeyboredClick);
 }
 
-//a function to jump or fall when necsessery
+//a function to jump or playerMovement.fall when necsessery
 function falling(){
-	if (speed<10){
-		speed = speed+0.5;
+	if (playerMovement.speed<10){
+		playerMovement.speed = playerMovement.speed+0.5;
 	}
-	mapDetails.changingY = mapDetails.changingY+speed;
-	mapDetails.currentYGrid=Math.floor(((mapDetails.changingY)*playerMovement.depth / mapDetails.pixleSizeY))+ checker + playerMovement.YCordenents;
+	mapDetails.changingY = mapDetails.changingY+playerMovement.speed;
+	mapDetails.currentYGrid=Math.floor(((mapDetails.changingY)*playerMovement.depth / mapDetails.pixleSizeY))+ mapDetails.checker + playerMovement.YCordenents;
 	//console.log(mapDetails.currentXGrid-1);
 	
-	if (speed >= 0){
+	if (playerMovement.speed >= 0){
 	if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
-		checker = 1;
+		mapDetails.checker = 1;
 		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+ mapDetails.changingY +'px)';
 		window.requestAnimationFrame(falling);
 	}else{
-		speed = 0;
+		playerMovement.speed = 0;
 		necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
 		//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
 		mapDetails.changingY = necesseryShift;
@@ -185,44 +283,40 @@ function falling(){
 		if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
 			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
 			window.requestAnimationFrame(falling);
-		}else{speed = 0;}
+		}else{playerMovement.speed = 0;}
 	}
 }
  
 //a functing of what to do when a mouse was presed
-var movement= 0;
-	var checker = 0;
-	var checkerY = 0;
-	var speed = 0;
-	var fall=0;
+	
 var hanndleKeyboredClick = function(click){
-	checker = 0;
-	movement= 0;
-	checkerY = 1;
+	mapDetails.checker = 0;
+	playerMovement.movement= 0;
+	mapDetails.checkerY = 1;
 	movementX = 0;
 	
 	if (click.keyCode == 100) {
-		movement= playerMovement.moveSpeed * -1;
-		checker = 1;
+		playerMovement.movement= playerMovement.moveSpeed * -1;
+		mapDetails.checker = 1;
 		movementX = 1;
 	}else if (click.keyCode == 97) {
-		movement= playerMovement.moveSpeed;
-		checker = 0;
+		playerMovement.movement= playerMovement.moveSpeed;
+		mapDetails.checker = 0;
 		movementX = 1;
 	}
 	
 	
-	//Math.floor(((mapDetails.changingY)*playerMovement.depth *-1 / mapDetails.pixleSizeY))+checker + playerMovement.YCordenents;
+	//Math.floor(((mapDetails.changingY)*playerMovement.depth *-1 / mapDetails.pixleSizeY))+mapDetails.checker + playerMovement.YCordenents;
 	var playerXpx = playerMovement.XCordenents * mapDetails.pixleSizeX;
-	mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+checker + playerMovement.XCordenents;
+	mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	var oldXcowards = mapDetails.currentXGrid;
-	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+checkerY + playerMovement.YCordenents;
+	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+mapDetails.checkerY + playerMovement.YCordenents;
 	//console.log(mapDetails.currentYGrid, mapDetails.currentXGrid)
 	//console.log(mapDetails.changingX % mapDetails.pixleSizeY, mapDetails.changingX, "%" ,mapDetails.pixleSizeY);
 	if (click.keyCode == 119){
-	checker = 0;
-	if (speed == 0){	
-		speed = -10;
+	mapDetails.checker = 0;
+	if (playerMovement.speed == 0){	
+		playerMovement.speed = -10;
 		window.requestAnimationFrame(falling);
 	}
 	}
@@ -230,12 +324,12 @@ var hanndleKeyboredClick = function(click){
 	//document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null
 	if (map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1] != 0){	
 		if ((map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents){
-			move(movement);
+			move(playerMovement.movement);
 			
 		}else{
-			necesseryShift = (movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
+			necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
 			if (necesseryShift > 0){
-				necesseryShift = (movement/playerMovement.moveSpeed)* (( mapDetails.currentXGrid - playerMovement.XCordenents - 1)*mapDetails.pixleSizeX);
+				necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* (( mapDetails.currentXGrid - playerMovement.XCordenents - 1)*mapDetails.pixleSizeX);
 				mapDetails.changingX = necesseryShift;
 			}
 			else{
@@ -244,17 +338,17 @@ var hanndleKeyboredClick = function(click){
 			move(0);
 		}
 	}else{
-		move(movement);
+		move(playerMovement.movement);
 	}
-	//mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+checker + playerMovement.XCordenents;
-	var newCowanrds=Math.floor(((mapDetails.changingX + movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+checker + playerMovement.XCordenents;
+	//mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
+	var newCowanrds=Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	if (oldXcowards != newCowanrds){
-		if (fall==0){
-		fall=1;
+		if (playerMovement.fall==0){
+		playerMovement.fall=1;
 		}
 		else{
 			window.requestAnimationFrame(falling);
-			fall=0		
+			playerMovement.fall=0		
 		}
 		
 	}
