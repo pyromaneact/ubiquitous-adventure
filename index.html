@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
-  <meta charset="UTF-8">
-  <title>game_map</title>
-  <link rel="stylesheet" href="./style.css">
-
+	<meta charset="UTF-8">
+	<title>game_map</title>
+	<link rel="stylesheet" href="./style.css">
+	<script	src="./data.js"></script>
+	<script	src="./gameEngin.js"></script>
 </head>
 <body>
-<h1>ubiquitous-adventure</h1>
+<h1>GAME TITLE</h1>
 
 <div class="gameZone">
-  <div class="wrapper" id="gameGrid">
-  </div>
-  </div>
-  <div class="movementButtons">
-   <button type="button">W</button> 
-   <br>
-   <br>
-   <button type="button">A</button> 
-   <button type="button">S</button> 
-   <button type="button">D</button> 
-  </div>
-   
-   <div class="movementButtons">
-	<button type="button">J</button> 
-	<button type="button">K</button> 
-   </div>
-  
-  
+	<div class="wrapper" id="gameGrid">
+	</div>
+</div>
+	
+<div class="buttons"> 
+	<div class="movementButtons">
+		<button type="button" onclick="movment(119)" style="grid-column: 2; grid-row: 1;">W</button> 
+		<button type="button" onmousedown="movment(97)"style="grid-column: 1; grid-row: 2;">A</button> 
+		<button type="button"style="grid-column: 2; grid-row: 2;">S</button> 
+		<button type="button"onmousedown="movment(100)" style="grid-column: 3; grid-row: 2;">D</button> 
+	</div>
+	 <p id="textBox"></p>
+	<div class="actionButtons">
+		<button type="button" style="grid-column: 1; grid-row: 1; border-radius: 50%;">J</button> 
+		<button type="button" style="grid-column: 2; grid-row: 2; border-radius: 50%;">K</button> 
+	</div>
+</div>
+	
 <h6>save/load Game</h6><h5>story so far</h5>
-  <script  src="./script.js"></script>
-
+	
+	<script>
+		loadMap(map);
+		movingSetup();
+		putText("once apone a time");
+	</script>
 </body>
 </html>

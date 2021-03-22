@@ -1,7 +1,7 @@
 .gameZone {
 	background-color: lightblue;
-	width: 400px;
-	height: 300px;
+	width: 33%;
+	height: 83%;
 	overflow: hidden;
 	margin-left: auto;
 	margin-right: auto;
@@ -47,17 +47,47 @@ h5{
 button{
 	background-color: #C1292E;
 	border-color: #C1292D;
-	width: 5%;
-	height: 20%;
+}
+.buttons{
+	display: grid; 
+	grid-template-columns: repeat(3, 33%); 
+	grid-template-rows: repeat(1, 100%); 
+	text-align: center;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
 }
 .movementButtons{
-	text-align: center;
-	margin-top: 7%;
-	margin-right: 60%;
+	height:100%;
+	grid-column: 1;
+	grid-row: 1;
+	text-align: left;
+	display: grid; 
+	grid-template-columns: repeat(3, 20%); 
+	grid-template-rows: repeat(2, 60%); 
+	grid-column-gap: 1%;
+	grid-row-gap: 2%;
+	margin-left:60%;
+	margin-top:5%;
 }
 
 .actionButtons{
 	text-align: center;
-	margin-top: 7%;
-	margin-left: 60%;
+	grid-column: 3;
+	grid-row: 1;
+	display: grid; 
+	grid-template-columns: repeat(2, 8%); 
+	grid-template-rows: repeat(2, 80%); 
+	margin-left:5%;
+	margin-top:5%;
 }
+#textBox{
+	height:100%;
+	width:100%;
+	background-color: #F0DCCA;
+	border-radius: 5%;
+	margin-top:-2%;
+	z-index:2000;
+	overflow: auto;
+	color:black;
+}
+
