@@ -27,9 +27,67 @@ var mapDetails={
 	checker:0,
 	checkerY:0
 };
-console.log(window.innerHeight);
 
 //a set of variables to controle visual elements 
+
+function makewalls({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=1,
+	interactions=0, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1
+}){
+	var walls = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions
+	};
+	return walls;
+}
+
+function makekey({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://developers.navionics.com/wp-content/uploads/2016/11/key-icon-300x300.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+}){
+	var key = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions
+	};
+	key.interact = function (){
+		var buttonJ = document.getElementById("J");
+		buttonJ.style = "border-color: black";
+	};
+	return key;
+}
+
 function makeCloud({
 	type='parallax-item',
 	endX=2,
@@ -41,6 +99,7 @@ function makeCloud({
 	colitions=0,
 	layerDepth=0.4
 }){
+	
 	var cloud={
 		type:type,
 		endX:endX,
@@ -132,17 +191,17 @@ function makePlayer({
 
 
 var map = [
-[makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-[0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({})],
+[makewalls({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),0,0,0,0,0,0,0,0,0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),makePlayer({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),0,0,0,makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),0,0,0,makeGround({}),0,0,makekey({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})]
 ];

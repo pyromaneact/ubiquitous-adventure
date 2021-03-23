@@ -51,7 +51,7 @@ button{
 .buttons{
 	display: grid; 
 	grid-template-columns: repeat(3, 33%); 
-	grid-template-rows: repeat(1, 100%); 
+	grid-template-rows: repeat(2, 100%); 
 	text-align: center;
 	grid-column-gap: 0px;
 	grid-row-gap: 0px;
@@ -59,7 +59,7 @@ button{
 .movementButtons{
 	height:100%;
 	grid-column: 1;
-	grid-row: 1;
+	grid-row: 2;
 	text-align: left;
 	display: grid; 
 	grid-template-columns: repeat(3, 20%); 
@@ -73,7 +73,7 @@ button{
 .actionButtons{
 	text-align: center;
 	grid-column: 3;
-	grid-row: 1;
+	grid-row: 2;
 	display: grid; 
 	grid-template-columns: repeat(2, 8%); 
 	grid-template-rows: repeat(2, 80%); 
@@ -83,6 +83,8 @@ button{
 #textBox{
 	height:100%;
 	width:100%;
+	grid-column: 2;
+	grid-row: 1;
 	background-color: #F0DCCA;
 	border-radius: 5%;
 	margin-top:-2%;
@@ -91,3 +93,8 @@ button{
 	color:black;
 }
 
+#J{
+	grid-column: 1; 
+	grid-row: 1; 
+	border-radius: 50%;
+}

@@ -120,23 +120,31 @@ function falling(){
 	//console.log(mapDetails.currentXGrid-1);
 	
 	if (playerMovement.speed >= 0){
-	if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
+	if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth && map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
 		mapDetails.checker = 1;
 		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+ mapDetails.changingY +'px)';
 		window.requestAnimationFrame(falling);
 	}else{
-		playerMovement.speed = 0;
-		necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
-		//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
-		mapDetails.changingY = necesseryShift;
+		if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1)
+		{
+			window.requestAnimationFrame(falling);
+		}else{
+			playerMovement.speed = 0;
+			necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
+			//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
+			mapDetails.changingY = necesseryShift;
 		
-		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
+			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
+		}
 	}
 	}else{
-		if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
+		if ((map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth && map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
 			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
 			window.requestAnimationFrame(falling);
-		}else{playerMovement.speed = 0;}
+		}else{
+			playerMovement.speed = 0;
+			window.requestAnimationFrame(falling);
+		}
 	}
 }
  
@@ -147,6 +155,18 @@ var hanndleKeyboredClick = function(click){
 }
 var hanndleButtonDClick = function(){
 	movment(100);
+}
+
+function colide(){
+	necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
+		if (necesseryShift > 0){
+			necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* (( mapDetails.currentXGrid - playerMovement.XCordenents - 1)*mapDetails.pixleSizeX);
+			mapDetails.changingX = necesseryShift;
+		}
+		else{
+			mapDetails.changingX = necesseryShift;
+		}
+		move(0);
 }
 
 function movment(keyCode){
@@ -181,21 +201,23 @@ function movment(keyCode){
 	}
 	}
 	
+	
+	
 	//document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null
-	if (map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1] != 0){	
-		if ((map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents){
+	var nextElement = map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1];
+	if (nextElement != 0){	
+		if ((nextElement.layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents ){
 			move(playerMovement.movement);
 			
 		}else{
-			necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
-			if (necesseryShift > 0){
-				necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* (( mapDetails.currentXGrid - playerMovement.XCordenents - 1)*mapDetails.pixleSizeX);
-				mapDetails.changingX = necesseryShift;
+			if (nextElement.colitions == 1){
+				colide()
+			}else if (nextElement.interactions == 1){
+				nextElement.interact();
+				move(playerMovement.movement);
+			}else{
+				move(playerMovement.movement);
 			}
-			else{
-				mapDetails.changingX = necesseryShift;
-			}
-			move(0);
 		}
 	}else{
 		move(playerMovement.movement);
