@@ -21,7 +21,7 @@ var mapDetails={
 	changingX:0,
 	changingY:0,
 	pixleSizeX: window.innerWidth*(1/38),
-	pixleSizeY: window.innerHeight*(23/612),
+	pixleSizeY: 23px,
 	currentXGrid:0,
 	currentYGrid:0,
 	checker:0,
