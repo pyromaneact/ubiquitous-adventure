@@ -25,7 +25,9 @@ function populate(gridX,gridY,{endX = 0,endY = 0,image = 0, movementDepth = 0, o
 			var removeX = endX	- 1;
 			while (removeX >= gridX && (removeX != gridX || removeY != gridY)){
 				var remove = document.getElementById("cell-" + removeY + ","+ removeX);
-				remove.parentNode.removeChild(remove);
+				if (remove !=null){
+					remove.parentNode.removeChild(remove);
+				}
 				removeX = removeX - 1;
 			}
 			removeY = removeY - 1;
