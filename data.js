@@ -122,7 +122,7 @@ function makeTree({
 	image="https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",
 	movementDepth=0.7, 
 	transformerX=40, 
-	transformerY=-4*mapDetails.pixleSizeY,
+	transformerY=-6*mapDetails.pixleSizeY,
 	colitions=0,	
 	layerDepth=0.7
 }){ 
