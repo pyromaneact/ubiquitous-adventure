@@ -181,10 +181,12 @@ function movment(keyCode){
 		playerMovement.movement= playerMovement.moveSpeed * -1;
 		mapDetails.checker = 1;
 		movementX = 1;
+		playerMovement.HTMLArray[0].innerHTML="<img src=" + map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].image + ">";
 	}else if (keyCode == 97) {
 		playerMovement.movement= playerMovement.moveSpeed;
 		mapDetails.checker = 0;
 		movementX = 1;
+		playerMovement.HTMLArray[0].innerHTML="<img src=" + map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].imageL + ">";
 	}
 	
 	
@@ -226,9 +228,9 @@ function movment(keyCode){
 	}
 	//mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	var newCowanrds=Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
-	if (oldXcowards != newCowanrds){
+	if (oldXcowards != newCowanrds && playerMovement.speed == 0){
 		if (playerMovement.fall==0){
-		playerMovement.fall=1;
+			playerMovement.fall=1;
 		}
 		else{
 			window.requestAnimationFrame(falling);
