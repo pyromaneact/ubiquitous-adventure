@@ -181,8 +181,9 @@ function makePlayer({
 		endX:endX,
 		endY:endY,
 		image:image,
-		imageR:["./Steamarmright.png","./Steamarmright1.png","./Steamarmright2.png","./Steamarmright3.png","./Steamarmright4.png"],
+		imageR:["./Steamarmright.png","./SteamarmRight1.png","./SteamarmRight2.png","./SteamarmRight3.png","./SteamarmRight4.png"],
 		imageL:["./Steamarmleft.png","./SteamarmLeft1.png","./SteamarmLeft2.png","./SteamarmLeft3.png","./SteamarmLeft4.png"],
+		//big thank you to Redwyn and opengameart for creating and supplying these anamations
 		currentAnamationFrame:0,
 		movementDepth:movementDepth, 
 		x:x, 
