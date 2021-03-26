@@ -176,17 +176,28 @@ function movment(keyCode){
 	playerMovement.movement= 0;
 	mapDetails.checkerY = 1;
 	movementX = 0;
+	var playerObject = map[playerMovement.YCordenents-1][playerMovement.XCordenents-1]
 	
 	if (keyCode == 100) {
 		playerMovement.movement= playerMovement.moveSpeed * -1;
 		mapDetails.checker = 1;
 		movementX = 1;
-		playerMovement.HTMLArray[0].innerHTML="<img src=" + map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].image + ">";
+		playerMovement.HTMLArray[0].innerHTML="<img src=" + playerObject.imageR[Math.floor(playerObject.currentAnamationFrame)] + ">";
+		if (playerObject.currentAnamationFrame < playerObject.imageR.length - 1){
+			playerObject.currentAnamationFrame = playerObject.currentAnamationFrame+0.25;
+		}else{
+			playerObject.currentAnamationFrame = 0;
+		}
 	}else if (keyCode == 97) {
 		playerMovement.movement= playerMovement.moveSpeed;
 		mapDetails.checker = 0;
 		movementX = 1;
-		playerMovement.HTMLArray[0].innerHTML="<img src=" + map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].imageL + ">";
+		playerMovement.HTMLArray[0].innerHTML="<img src=" + playerObject.imageL[Math.floor(playerObject.currentAnamationFrame)] + ">";
+		if (playerObject.currentAnamationFrame < playerObject.imageR.length - 1){
+			playerObject.currentAnamationFrame = playerObject.currentAnamationFrame+0.25;
+		}else{
+			playerObject.currentAnamationFrame = 0;
+		}
 	}
 	
 	
