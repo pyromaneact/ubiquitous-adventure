@@ -58,6 +58,41 @@ function makewalls({
 	return walls;
 }
 
+function resetSqure({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=0, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1
+}){
+	var resetSqure = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions
+	};
+	
+	resetSqure.interact = function (){
+		var buttonJ = document.getElementById("J");
+		buttonJ.style = "border-color: #C1292D;";
+		buttonJ.onmousedown=function() {};
+		putText("");
+	};
+	
+	return resetSqure;
+}
+
 function makekey({
 	type='parallax-item',
 	endX=1,
@@ -80,11 +115,25 @@ function makekey({
 		transformerX:transformerX, 
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
-		interactions:interactions
+		interactions:interactions,
+		ran:0
 	};
 	key.interact = function (){
 		var buttonJ = document.getElementById("J");
 		buttonJ.style = "border-color: black";
+		buttonJ.onmousedown=function() {
+			var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid);
+			console.log(keyElement.innerHTML);
+			keyElement.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png">';
+			var buttonJ = document.getElementById("J");
+			buttonJ.style = "border-color: #C1292D;";
+			buttonJ.onmousedown=function() {};
+			putText("");
+			key.ran=1;
+		};
+		if (key.ran==0){
+			putText("a key maybey we should pick that up for later try pressing J on it");
+		}
 	};
 	return key;
 }
@@ -122,7 +171,7 @@ function makeTree({
 	image="https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",
 	movementDepth=0.7, 
 	transformerX=40, 
-	transformerY=-6*mapDetails.pixleSizeY,
+	transformerY=-4*mapDetails.pixleSizeY,
 	colitions=0,	
 	layerDepth=0.7
 }){ 
@@ -164,6 +213,7 @@ function makeGround({
 	};
 	return ground;
 }
+
 function makePlayer({
 	type = 'player',
 	endX = 1,

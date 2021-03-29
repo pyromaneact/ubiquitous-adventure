@@ -135,7 +135,7 @@ function falling(){
 			necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
 			//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
 			mapDetails.changingY = necesseryShift;
-		
+			
 			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
 		}
 	}
@@ -173,12 +173,14 @@ function colide(){
 
 function movment(keyCode){
 	mapDetails.checker = 0;
-	playerMovement.movement= 0;
+	//playerMovement.movement= 0;
 	mapDetails.checkerY = 1;
 	movementX = 0;
+	playerMovement.movement=0;
 	var playerObject = map[playerMovement.YCordenents-1][playerMovement.XCordenents-1]
 	
 	if (keyCode == 100) {
+		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed * -1;
 		mapDetails.checker = 1;
 		movementX = 1;
@@ -189,6 +191,7 @@ function movment(keyCode){
 			playerObject.currentAnamationFrame = 0;
 		}
 	}else if (keyCode == 97) {
+		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed;
 		mapDetails.checker = 0;
 		movementX = 1;
@@ -207,7 +210,7 @@ function movment(keyCode){
 	var oldXcowards = mapDetails.currentXGrid;
 	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+mapDetails.checkerY + playerMovement.YCordenents;
 	//console.log(mapDetails.currentYGrid, mapDetails.currentXGrid)
-	//console.log(mapDetails.changingX % mapDetails.pixleSizeY, mapDetails.changingX, "%" ,mapDetails.pixleSizeY);
+	console.log(keyCode);
 	if (keyCode == 119){
 	mapDetails.checker = 0;
 	if (playerMovement.speed == 0){	
@@ -216,14 +219,15 @@ function movment(keyCode){
 	}
 	}
 	
-	
+	if (keyCode == 106){
+		document.getElementById("J").onmousedown();
+	}
 	
 	//document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null
 	var nextElement = map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1];
 	if (nextElement != 0){	
 		if ((nextElement.layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents ){
-			move(playerMovement.movement);
-			
+			move(playerMovement.movement);		
 		}else{
 			if (nextElement.colitions == 1){
 				colide()
@@ -240,8 +244,8 @@ function movment(keyCode){
 	//mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	var newCowanrds=Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	if (oldXcowards != newCowanrds && playerMovement.speed == 0){
-		if (playerMovement.fall==0){
-			playerMovement.fall=1;
+		if (playerMovement.fall<2){
+			playerMovement.fall=playerMovement.fall + 1;
 		}
 		else{
 			window.requestAnimationFrame(falling);
@@ -249,7 +253,6 @@ function movment(keyCode){
 		}
 		
 	}
-	
 	
 }
 
