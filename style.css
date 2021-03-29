@@ -98,3 +98,24 @@ button{
 	grid-row: 1; 
 	border-radius: 50%;
 }
+
+.answers{
+	grid-column: 2;
+	grid-row: 2;
+	display: grid; 
+	grid-template-columns: repeat(2,50%); 
+	grid-template-rows: repeat(2, 50%); 
+	text-align: center;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+}
+.answers button{
+	height:100%;
+	width:100%;
+	background-color: #F0DCCA;
+	border-radius: 10%;
+	margin-top:-2%;
+	z-index:2000;
+	overflow: auto;
+	color:black;
+}

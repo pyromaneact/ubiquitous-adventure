@@ -15,7 +15,8 @@ function populate(gridX,gridY,{endX = 0,endY = 0,image = 0, movementDepth = 0, o
 	elument.dataset.depth = movementDepth;
 	elument.dataset.transformerX = transformX;
 	elument.dataset.transformerY = transformY;
-	elument.style.zIndex = 1000 * layerDepth;
+	elument.dataset.zIndex = 1000 * layerDepth;
+	elument.style.zIndex = elument.dataset.zIndex;
 	elument.innerHTML = '<img src="'+ image +'">';
 	if (endX - gridX > 1 || endY - gridY > 1){
 		elument.style = 'grid-area: ' + gridY + ' / ' + gridX + ' / ' + endY + ' / ' + endX + ';';
@@ -79,6 +80,7 @@ function move(change){
 		var transformerX = parseFloat(item.dataset.transformerX, 10);
 		var transformerY = parseFloat(item.dataset.transformerY, 10);
 		item.style.transform ='translate( '+ (mapDetails.changingX + transformerX)*depth +'px, ' + transformerY + 'px)';
+		item.style.zIndex = item.dataset.zIndex;
 	});
 }
 
@@ -210,7 +212,7 @@ function movment(keyCode){
 	var oldXcowards = mapDetails.currentXGrid;
 	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+mapDetails.checkerY + playerMovement.YCordenents;
 	//console.log(mapDetails.currentYGrid, mapDetails.currentXGrid)
-	console.log(keyCode);
+	//console.log(keyCode);
 	if (keyCode == 119){
 	mapDetails.checker = 0;
 	if (playerMovement.speed == 0){	
@@ -259,4 +261,12 @@ function movment(keyCode){
 function putText(story){
 	var storyBox = document.getElementById("textBox");
 	storyBox.innerHTML = story;
+}
+function putDialog(question, answers){
+	putText(question);
+	var updateHTML = "";
+	answers.forEach(function(answer){
+		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+answer[1]+'>' + answer[0] + '</button>';
+	})
+	document.getElementsByClassName("answers")[0].innerHTML = updateHTML;
 }
