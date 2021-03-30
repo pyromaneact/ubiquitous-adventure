@@ -111,7 +111,11 @@ function movingSetup(){
 
 	hanndleKeyboredClick;
 	move(0);
-	window.addEventListener("keypress",hanndleKeyboredClick);
+	
+	//window.addEventListener("keypress",hanndleKeyboredClick);
+	window.addEventListener('keydown', hanndleKeyboredClick);
+	document.addEventListener("mouseup", mouseUp);
+	window.addEventListener('keyup',keyUp);
 }
 
 //a function to jump or playerMovement.fall when necsessery
@@ -153,13 +157,45 @@ function falling(){
 }
  
 //a functing of what to do when a mouse was presed
-	
+
+
+//code modified from https://stackoverflow.com/questions/15505272/javascript-while-mousedown on 30/03/21
 var hanndleKeyboredClick = function(click){
-	movment(click.keyCode);
+	//movment(click.keyCode);
+	if (click.keyCode == 87){
+		movment(click.keyCode)
+	}else if(playerMovement.mousedownID==-1 && click.keyCode != 87){
+		playerMovement.mousedownID = setInterval(function() {movment(click.keyCode)}, 50);;
+	}
 }
-var hanndleButtonDClick = function(){
-	movment(100);
+
+
+function hanndleButtonDClick(){
+	if(playerMovement.mousedownID==-1 ){
+		playerMovement.mousedownID = setInterval(function() {movment(68)}, 50);
+	}
 }
+
+function mouseUp() {
+   if(playerMovement.mousedownID!=-1) {  //Only stop if exists
+     clearInterval(playerMovement.mousedownID);
+     playerMovement.mousedownID=-1;
+   }
+}
+function keyUp(click) {
+	console.log(click.keyCode)
+	if (click.keyCode != 87){
+		mouseUp()
+	}
+}
+
+
+function hanndleButtonAClick(){
+	if(playerMovement.mousedownID==-1){
+		playerMovement.mousedownID = setInterval(function() {movment(65)}, 50);
+	}
+}
+
 
 function colide(){
 	necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
@@ -173,6 +209,10 @@ function colide(){
 		move(0);
 }
 
+
+
+
+
 function movment(keyCode){
 	mapDetails.checker = 0;
 	//playerMovement.movement= 0;
@@ -181,7 +221,7 @@ function movment(keyCode){
 	playerMovement.movement=0;
 	var playerObject = map[playerMovement.YCordenents-1][playerMovement.XCordenents-1]
 	
-	if (keyCode == 100) {
+	if (keyCode == 68) {
 		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed * -1;
 		mapDetails.checker = 1;
@@ -192,7 +232,7 @@ function movment(keyCode){
 		}else{
 			playerObject.currentAnamationFrame = 0;
 		}
-	}else if (keyCode == 97) {
+	}else if (keyCode == 65) {
 		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed;
 		mapDetails.checker = 0;
@@ -213,7 +253,7 @@ function movment(keyCode){
 	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+mapDetails.checkerY + playerMovement.YCordenents;
 	//console.log(mapDetails.currentYGrid, mapDetails.currentXGrid)
 	//console.log(keyCode);
-	if (keyCode == 119){
+	if (keyCode == 87){
 	mapDetails.checker = 0;
 	if (playerMovement.speed == 0){	
 		playerMovement.speed = -10;
@@ -263,11 +303,11 @@ function putText(story){
 	storyBox.innerHTML = story;
 	document.getElementsByClassName("answers")[0].innerHTML = "";
 }
-function putDialog(question, answers){
+function putDialog(placement, question, answers){
 	putText(question);
 	var updateHTML = "";
 	answers.forEach(function(answer){
-		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+answer[1]+'>' + answer[0] + '</button>';
+		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+ placement + "." + answer[1]+'>' + answer[0] + '</button>';
 	})
 	document.getElementsByClassName("answers")[0].innerHTML = updateHTML;
 }
