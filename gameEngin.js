@@ -261,6 +261,7 @@ function movment(keyCode){
 function putText(story){
 	var storyBox = document.getElementById("textBox");
 	storyBox.innerHTML = story;
+	document.getElementsByClassName("answers")[0].innerHTML = "";
 }
 function putDialog(question, answers){
 	putText(question);

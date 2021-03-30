@@ -194,7 +194,7 @@ function makeGround({
 	type='parallax-item',
 	endX=0,
 	endY=0,
-	image="./grass_block.png",
+	image="./game_graphics/grass_block.png",
 	movementDepth=1, 
 	colitions=1, 
 	transformerX=0, 
@@ -219,7 +219,7 @@ function makeFreind({
 	type='parallax-item',
 	endX = 1,
 	endY = 2,
-	image="./glitch-assets-2-1/glitch-assets/npc_smuggler_head_2_variant_green/npc_smuggler_head_2_variant_green_x1_iconic_png_1354836156.png",
+	image="./game_graphics/npc_smuggler_head_2_variant_green_x1_iconic_png_1354836156.png",
 	movementDepth=1, 
 	colitions=0,
 	interactions=0, 	
@@ -269,7 +269,7 @@ function meetFreind({
 	};
 	freindDialog.interact = function (){
 		question = "hello freind how are you?";
-		var answers = [["shit my wife left", 'sheLeft();'], ["ah could be worse", 'putText("b");']];
+		var answers = [["shit my wife left", 'sheLeft();'], ["ah could be worse", 'alright();']];
 		putDialog(question, answers);
 	}
 	return freindDialog
@@ -277,13 +277,16 @@ function meetFreind({
 function sheLeft(){
 	putText("hahahah you alone");
 }
+function alright(){
+	putText("yeah man it is hard right now");
+}
 
 
 function makePlayer({
 	type = 'player',
 	endX = 1,
 	endY = 2,
-	image = "./Steamarmright.png",
+	image = "./game_graphics/Steamarmright.png",
 	movementDepth=1, 
 	x = 1, 
 	Y = 11, 
@@ -296,8 +299,8 @@ function makePlayer({
 		endX:endX,
 		endY:endY,
 		image:image,
-		imageR:["./Steamarmright.png","./SteamarmRight1.png","./SteamarmRight2.png","./SteamarmRight3.png","./SteamarmRight4.png"],
-		imageL:["./Steamarmleft.png","./SteamarmLeft1.png","./SteamarmLeft2.png","./SteamarmLeft3.png","./SteamarmLeft4.png"],
+		imageR:["./game_graphics/Steamarmright.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"],
+		imageL:["./game_graphics/Steamarmleft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"],
 		//big thank you to Redwyn and opengameart for creating and supplying these anamations
 		currentAnamationFrame:0,
 		movementDepth:movementDepth, 
