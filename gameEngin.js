@@ -1,23 +1,17 @@
 
 
 //function to add an image to the visual grid
-function populate(gridX,gridY,{endX = 0,endY = 0,image = 0, movementDepth = 0, object = 0, transformX = 0, transformY = 0, layerDepth=0}){
-	//optinal prameters code addapted from this stackOverflow thred: https://stackoverflow.com/questions/12797118/how-can-i-declare-optional-function-parameters-in-javascript?fbclid=IwAR2XMH66g0JjiFVgJuBMWBnzsN5agbqAoiahNb1mKIP2a73ONfZ8CJEtzAQ
-	image = image || object.image;
-	movementDepth = movementDepth || object.movementDepth;
-	endX = endX || object.endX + gridX;
-	endY = endY || object.endY + gridY;
-	transformX = transformX || object.transformerX;
-	transformY = transformY || object.transformerY;
-	layerDepth = layerDepth || object.layerDepth;
+function populate(gridX, gridY, object){
+	endX =object.endX + gridX;
+	endY =object.endY + gridY;
 	
 	var elument = document.getElementById("cell-"+gridY+","+ gridX);
-	elument.dataset.depth = movementDepth;
-	elument.dataset.transformerX = transformX;
-	elument.dataset.transformerY = transformY;
-	elument.dataset.zIndex = 1000 * layerDepth;
+	elument.dataset.depth = object.movementDepth;
+	elument.dataset.transformerX = object.transformerX;
+	elument.dataset.transformerY = object.transformerY;
+	elument.dataset.zIndex = (1000 * object.layerDepth) + object.indexMod;
 	elument.style.zIndex = elument.dataset.zIndex;
-	elument.innerHTML = '<img src="'+ image +'">';
+	elument.innerHTML = '<img src="'+ object.image +'">';
 	if (endX - gridX > 1 || endY - gridY > 1){
 		elument.style = 'grid-area: ' + gridY + ' / ' + gridX + ' / ' + endY + ' / ' + endX + ';';
 		
@@ -62,7 +56,7 @@ function loadMap(map){
 		for (let XPosition = 0; XPosition < XLength; XPosition++){
 			if (mapDetails.map2DArray[YPosition][XPosition] !=0){
 				if (mapDetails.map2DArray[YPosition][XPosition].length==undefined){
-					populate(XPosition + 1,YPosition + 1,{object:mapDetails.map2DArray[YPosition][XPosition]})
+					populate(XPosition + 1,YPosition + 1,mapDetails.map2DArray[YPosition][XPosition])
 				}
 			}
 		}
@@ -92,7 +86,7 @@ function movingSetup(){
 	playerMovement.HTMLColection = document.getElementsByClassName('player');
 	playerMovement.HTMLArray= Array.from(playerMovement.HTMLColection);
 	playerMovement.depth = parseFloat(playerMovement.HTMLArray[0].dataset.depth, 10);
-	playerMovement.HTMLArray[0].style.zIndex = 1000*playerMovement.depth;
+	playerMovement.HTMLArray[0].style.zIndex = playerMovement.HTMLArray[0].dataset.zIndex;
 	
 	var positionCounter=5;
 	var playerYGrid = '';
@@ -128,25 +122,26 @@ function falling(){
 	//console.log(mapDetails.currentXGrid-1);
 	
 	if (playerMovement.speed >= 0){
-	if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth && map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
-		mapDetails.checker = 1;
-		playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+ mapDetails.changingY +'px)';
-		window.requestAnimationFrame(falling);
-	}else{
-		if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1)
-		{
+		if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth && map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
+			mapDetails.checker = 1;
+			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+ mapDetails.changingY +'px)';
 			window.requestAnimationFrame(falling);
 		}else{
-			playerMovement.speed = 0;
-			necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
-			//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
-			mapDetails.changingY = necesseryShift;
-			
-			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
-		}
+			if (map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1)
+			{
+				window.requestAnimationFrame(falling);
+			}else{
+				playerMovement.speed = 0;
+				necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
+				//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
+				mapDetails.changingY = necesseryShift;
+				
+				playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
+			}
 	}
 	}else{
-		if ((map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth && map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
+		console.log(map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth+ "!=" + playerMovement.HTMLArray[0].dataset.depth + "||" + map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions + "!= 1 ) || " + map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type + "==" + map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type + ") {		");
+		if (map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1 || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
 			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
 			window.requestAnimationFrame(falling);
 		}else{
@@ -169,7 +164,6 @@ var hanndleKeyboredClick = function(click){
 	}
 }
 
-
 function hanndleButtonDClick(){
 	if(playerMovement.mousedownID==-1 ){
 		playerMovement.mousedownID = setInterval(function() {movment(68)}, 50);
@@ -182,6 +176,7 @@ function mouseUp() {
      playerMovement.mousedownID=-1;
    }
 }
+
 function keyUp(click) {
 	console.log(click.keyCode)
 	if (click.keyCode != 87){
@@ -189,13 +184,11 @@ function keyUp(click) {
 	}
 }
 
-
 function hanndleButtonAClick(){
 	if(playerMovement.mousedownID==-1){
 		playerMovement.mousedownID = setInterval(function() {movment(65)}, 50);
 	}
 }
-
 
 function colide(){
 	necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
@@ -208,10 +201,6 @@ function colide(){
 		}
 		move(0);
 }
-
-
-
-
 
 function movment(keyCode){
 	mapDetails.checker = 0;
@@ -261,8 +250,10 @@ function movment(keyCode){
 	}
 	}
 	
-	if (keyCode == 106){
+	if (keyCode == 74){
 		document.getElementById("J").onmousedown();
+	}else if (keyCode == 75){
+		document.getElementById("K").onmousedown();
 	}
 	
 	//document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null

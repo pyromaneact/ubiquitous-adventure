@@ -1,3 +1,5 @@
+//optinal prameters code (later removed but link might be usfull for clean up) addapted from this stackOverflow thred: https://stackoverflow.com/questions/12797118/how-can-i-declare-optional-function-parameters-in-javascript?fbclid=IwAR2XMH66g0JjiFVgJuBMWBnzsN5agbqAoiahNb1mKIP2a73ONfZ8CJEtzAQ
+	
 //visual setup
 
 var playerMovement={
@@ -42,7 +44,8 @@ function makewalls({
 	interactions=0, 	
 	transformerX=0, 
 	transformerY=0, 
-	layerDepth=1
+	layerDepth=1,
+	indexMod=0
 }){
 	var walls = {
 		type:type,
@@ -54,7 +57,8 @@ function makewalls({
 		transformerX:transformerX, 
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
-		interactions:interactions
+		interactions:interactions,
+		indexMod:indexMod
 	};
 	return walls;
 }
@@ -67,7 +71,8 @@ function resetSqure({
 	movementDepth=1, 
 	colitions=0,
 	interactions=1, 	
-	transformerX=0, 
+	transformerX=0,
+	indexMod=0,	
 	transformerY=0, 
 	layerDepth=1
 }){
@@ -81,7 +86,8 @@ function resetSqure({
 		transformerX:transformerX, 
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
-		interactions:interactions
+		interactions:interactions,
+		indexMod:indexMod
 	};
 	
 	resetSqure.interact = function (){
@@ -106,6 +112,7 @@ function makekey({
 	transformerX=0, 
 	transformerY=0, 
 	layerDepth=1,
+	indexMod=0
 }){
 	var key = {
 		type:type,
@@ -118,6 +125,7 @@ function makekey({
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
 		interactions:interactions,
+		indexMod:indexMod,
 		ran:0
 	};
 	key.interact = function (){
@@ -139,6 +147,51 @@ function makekey({
 	return key;
 }
 
+function makeScrewDriver({
+	type='parallax-item',
+	endX=1,
+	endY=1,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0
+}){
+	var key = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0
+	};
+	key.interact = function (){
+		if (key.ran!=1){
+			var buttonJ = document.getElementById("J");
+			buttonJ.style = "border-color: black";
+			var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
+			buttonJ.onmousedown=function() {
+				var buttonJ = document.getElementById("J");
+				buttonJ.style = "border-color: #C1292D;";
+				buttonJ.onmousedown=function() {};
+				putText("  ");
+				key.ran=1;
+			};
+			putText("A Screw Driver maybe we should save that for later! try pressing J on it");
+		}
+	};
+	return key;
+}
+
 function makeCloud({
 	type='parallax-item',
 	endX=2,
@@ -148,6 +201,7 @@ function makeCloud({
 	transformerX=0,
 	transformerY=40,
 	colitions=0,
+	indexMod=0,
 	layerDepth=0.4
 }){
 	
@@ -160,7 +214,8 @@ function makeCloud({
 		colitions:colitions,
 		transformerX:transformerX, 
 		transformerY:transformerY, 
-		layerDepth:layerDepth
+		layerDepth:layerDepth,
+		indexMod:indexMod
 	};
 	return cloud;
 }
@@ -174,7 +229,8 @@ function makeTree({
 	transformerX=40, 
 	transformerY=-4*mapDetails.pixleSizeY,
 	colitions=0,	
-	layerDepth=0.7
+	layerDepth=0.7,
+	indexMod=0
 }){ 
 	var tree = {
 		type:type,
@@ -185,7 +241,8 @@ function makeTree({
 		colitions:colitions,
 		transformerX:transformerX, 
 		transformerY:transformerY, 
-		layerDepth:layerDepth
+		layerDepth:layerDepth,
+		indexMod:indexMod
 	};
 	return tree;
 }
@@ -199,7 +256,8 @@ function makeGround({
 	colitions=1, 
 	transformerX=0, 
 	transformerY=0, 
-	layerDepth=1
+	layerDepth=1,
+	indexMod=0
 }){ 
 	var ground = {
 		type:type,
@@ -210,7 +268,8 @@ function makeGround({
 		colitions:colitions,
 		transformerX:transformerX, 
 		transformerY:transformerY, 
-		layerDepth:layerDepth
+		layerDepth:layerDepth,
+		indexMod:indexMod
 	};
 	return ground;
 }
@@ -226,6 +285,7 @@ function makeFreind({
 	transformerX=0, 
 	transformerY=0, 
 	layerDepth=1,
+	indexMod=0,
 }){
 	var freind = {
 		type:type,
@@ -238,6 +298,7 @@ function makeFreind({
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
 		interactions:interactions,
+		indexMod:indexMod,
 		ran:0
 	}
 	return freind
@@ -253,7 +314,8 @@ function meetFreind({
 	interactions=1, 	
 	transformerX=0, 
 	transformerY=0, 
-	layerDepth=1
+	layerDepth=1,
+	indexMod=0
 }){
 	var freindDialog = {
 		type:type,
@@ -266,6 +328,7 @@ function meetFreind({
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
 		interactions:interactions,
+		indexMod:indexMod,
 		ran:0
 	};
 	freindDialog.interact = function (){
@@ -290,7 +353,7 @@ function meetFreind({
 		freindDialog.endConvo();
 	}
 	freindDialog.endConvo= function(){
-		for (var i = 0; i < 5; i++) { 
+		for (var i = 0; i < 7; i++) { 
 			var YCowards = freindDialog.Y -1 - i;
 			var XCowards = freindDialog.X ;
 			var wall = map[YCowards][XCowards];
@@ -302,7 +365,6 @@ function meetFreind({
 	return freindDialog
 };
 
-
 function makePlayer({
 	type = 'player',
 	endX = 1,
@@ -313,7 +375,8 @@ function makePlayer({
 	Y = 11, 
 	transformerX = 0, 
 	transformerY = 0, 
-	layerDepth = 1
+	layerDepth = 1,
+	indexMod=0
 }){ 
 	var player = {
 		type:type,
@@ -329,7 +392,8 @@ function makePlayer({
 		Y:Y, 
 		transformerX:transformerX, 
 		transformerY:transformerY, 
-		layerDepth:layerDepth
+		layerDepth:layerDepth,
+		indexMod:indexMod
 	};
 	return player;
 }
@@ -337,19 +401,21 @@ function makePlayer({
 
 
 var map = [
-[makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({})],
-[makewalls({}),makewalls({}),0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({}),makewalls({})],
-[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),0,0,0,0,0,0,0,0,0,0,resetSqure({}),0,makekey({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makeGround({}),makeGround({}),resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),0,0,0,0,0,makewalls({}),0,0,makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),makePlayer({}),0,0,0,0,makewalls({}),makeFreind({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),0,0,0,resetSqure({}),meetFreind({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})],
-[makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
+[makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({})],
+[makewalls({}),0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({}),makewalls({})],
+[makeGround({}),makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,resetSqure({}),0,makekey({}),0,resetSqure({}),0,0,0,0,0,makeCloud({}),0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,makeGround({}),makeGround({}),resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),0,makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),0,makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),0,makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),makePlayer({}),makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),makeFreind({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),0,makewalls({}),resetSqure({}),0,0,0,0,0,0,0,resetSqure({}),meetFreind({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})],
+[makeTree({endY:12, endX:7, transformerY:-13*mapDetails.pixleSizeY, movementDepth:1, layerDepth:1}),0,0,0,0,0,0,0,0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ];
