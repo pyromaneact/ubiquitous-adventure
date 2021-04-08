@@ -140,11 +140,12 @@ function falling(){
 			}
 	}
 	}else{
-		console.log(map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth+ "!=" + playerMovement.HTMLArray[0].dataset.depth + "||" + map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions + "!= 1 ) || " + map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type + "==" + map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type + ") {		");
-		if (map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1 || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
+		colitionPoint = map[mapDetails.currentYGrid - 1][mapDetails.currentXGrid-1]
+		if (colitionPoint.layerDepth != playerMovement.HTMLArray[0].dataset.depth || colitionPoint.colitions != 1 || colitionPoint.type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) {		
 			playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY+'px)';
 			window.requestAnimationFrame(falling);
 		}else{
+			
 			playerMovement.speed = 0;
 			window.requestAnimationFrame(falling);
 		}
