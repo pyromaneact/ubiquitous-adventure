@@ -5,6 +5,7 @@
 	<title>game_map</title>
 	<link rel="stylesheet" href="./style.css">
 	<script	src="./data.js"></script>
+	<script	src="./charChose.js"></script>
 	<script	src="./gameEngin.js"></script>
 </head>
 <body>
@@ -22,7 +23,7 @@
 		<button type="button"style="grid-column: 2; grid-row: 2;">S</button> 
 		<button type="button"onmousedown="hanndleButtonDClick()" onmouseup="mouseup()" style="grid-column: 3; grid-row: 2;">D</button> 
 	</div>
-	 <p id="textBox"></p>
+	 <p id="textBox">&#9660</p>
 	 <div class="answers">
 		
 	 </div>
@@ -35,10 +36,11 @@
 <h6>save/load Game</h6><h5>story so far</h5>
 	
 	<script>
-		loadMap(map);
-		movingSetup();
-		move(-5*mapDetails.pixleSizeX)
-		putText("once apone a time");
+		loadMap(choisemap);
+		//movingSetup();
+		//move(-5*mapDetails.pixleSizeX)
+		//putDialog({},"choose your charitor", ["abbie",'loadMap(map)'],["turner",'loadMap(map)']);
+		choseChar();
 	</script>
 </body>
 </html>

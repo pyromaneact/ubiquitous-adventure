@@ -119,7 +119,6 @@ function falling(){
 	}
 	mapDetails.changingY = mapDetails.changingY+playerMovement.speed;
 	mapDetails.currentYGrid=Math.floor(((mapDetails.changingY)*playerMovement.depth / mapDetails.pixleSizeY))+ mapDetails.checker + playerMovement.YCordenents;
-	//console.log(mapDetails.currentXGrid-1);
 	
 	if (playerMovement.speed >= 0){
 		if ((map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].layerDepth != playerMovement.HTMLArray[0].dataset.depth && map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].colitions != 1) || map[mapDetails.currentYGrid][mapDetails.currentXGrid-1].type == map[playerMovement.YCordenents-1][playerMovement.XCordenents-1].type) { 
@@ -133,7 +132,6 @@ function falling(){
 			}else{
 				playerMovement.speed = 0;
 				necesseryShift = (( mapDetails.currentYGrid - playerMovement.YCordenents - 1) * mapDetails.pixleSizeY);
-				//console.log("(", mapDetails.currentYGrid, " - ", playerMovement.YCordenents, "- 1) *", mapDetails.pixleSizeY, "=", necesseryShift)
 				mapDetails.changingY = necesseryShift;
 				
 				playerMovement.HTMLArray[0].style.transform ='translate( 0px, '+mapDetails.changingY +'px)';
@@ -152,45 +150,9 @@ function falling(){
 	}
 }
  
-//a functing of what to do when a mouse was presed
 
 
-//code modified from https://stackoverflow.com/questions/15505272/javascript-while-mousedown on 30/03/21
-var hanndleKeyboredClick = function(click){
-	//movment(click.keyCode);
-	if (click.keyCode == 87){
-		movment(click.keyCode)
-	}else if(playerMovement.mousedownID==-1 && click.keyCode != 87){
-		playerMovement.mousedownID = setInterval(function() {movment(click.keyCode)}, 50);;
-	}
-}
-
-function hanndleButtonDClick(){
-	if(playerMovement.mousedownID==-1 ){
-		playerMovement.mousedownID = setInterval(function() {movment(68)}, 50);
-	}
-}
-
-function mouseUp() {
-   if(playerMovement.mousedownID!=-1) {  //Only stop if exists
-     clearInterval(playerMovement.mousedownID);
-     playerMovement.mousedownID=-1;
-   }
-}
-
-function keyUp(click) {
-	console.log(click.keyCode)
-	if (click.keyCode != 87){
-		mouseUp()
-	}
-}
-
-function hanndleButtonAClick(){
-	if(playerMovement.mousedownID==-1){
-		playerMovement.mousedownID = setInterval(function() {movment(65)}, 50);
-	}
-}
-
+//a function to insure that the player gose right up to an object before stoping
 function colide(){
 	necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
 		if (necesseryShift > 0){
@@ -203,62 +165,101 @@ function colide(){
 		move(0);
 }
 
-function movment(keyCode){
-	mapDetails.checker = 0;
-	//playerMovement.movement= 0;
-	mapDetails.checkerY = 1;
-	movementX = 0;
-	playerMovement.movement=0;
-	var playerObject = map[playerMovement.YCordenents-1][playerMovement.XCordenents-1]
+
+//a set of functons to say what to do when a key was presed
+
+
+//code modified from https://stackoverflow.com/questions/15505272/javascript-while-mousedown on 30/03/21
+var hanndleKeyboredClick = function(click){
+	//movment(click.keyCode);
+	if (click.keyCode == 87){
+		movment(click.keyCode)
+	}else if(playerMovement.mousedownID==-1 && click.keyCode != 87){
+		playerMovement.mousedownID = setInterval(function() {movment(click.keyCode)}, 50);;
+	}
+}
+
+//functions to allow you to hold down the A and D button
+function hanndleButtonDClick(){
+	if(playerMovement.mousedownID==-1 ){
+		playerMovement.mousedownID = setInterval(function() {movment(68)}, 50);
+	}
+}
+
+function hanndleButtonAClick(){
+	if(playerMovement.mousedownID==-1){
+		playerMovement.mousedownID = setInterval(function() {movment(65)}, 50);
+	}
+}
+
+//functions to let stop the movement
+function mouseUp() {
+   if(playerMovement.mousedownID!=-1) {  //Only stop if exists
+     clearInterval(playerMovement.mousedownID);
+     playerMovement.mousedownID=-1;
+   }
+}
+
+function keyUp(click) {
+	//console.log(click.keyCode)
+	if (click.keyCode != 87){
+		mouseUp()
+	}
+}
+
+//cycle threw the movemnt anamation
+function movmentAnamation(images, currentAnamationFrame){
 	
+	playerMovement.HTMLArray[0].innerHTML="<img src=" + images[Math.floor(currentAnamationFrame)] + ">";
+		if (currentAnamationFrame < images.length - 1){
+			currentAnamationFrame = currentAnamationFrame+0.25;
+		}else{
+			currentAnamationFrame = 0;
+		}
+	return currentAnamationFrame;
+}
+
+
+//function to do side to side movement calculations
+function sideMovement(keyCode){
+	
+	movementX = 0;
+	var playerObject = map[playerMovement.YCordenents-1][playerMovement.XCordenents-1];
+	
+	
+	
+	
+	
+	//set ib nessesery varables for runing movement functions
 	if (keyCode == 68) {
 		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed * -1;
 		mapDetails.checker = 1;
 		movementX = 1;
-		playerMovement.HTMLArray[0].innerHTML="<img src=" + playerObject.imageR[Math.floor(playerObject.currentAnamationFrame)] + ">";
-		if (playerObject.currentAnamationFrame < playerObject.imageR.length - 1){
-			playerObject.currentAnamationFrame = playerObject.currentAnamationFrame+0.25;
-		}else{
-			playerObject.currentAnamationFrame = 0;
-		}
+		
+		playerObject.currentAnamationFrame = movmentAnamation(playerObject.imageR, playerObject.currentAnamationFrame);
+		
+		
+		
 	}else if (keyCode == 65) {
 		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed;
 		mapDetails.checker = 0;
 		movementX = 1;
-		playerMovement.HTMLArray[0].innerHTML="<img src=" + playerObject.imageL[Math.floor(playerObject.currentAnamationFrame)] + ">";
-		if (playerObject.currentAnamationFrame < playerObject.imageR.length - 1){
-			playerObject.currentAnamationFrame = playerObject.currentAnamationFrame+0.25;
-		}else{
-			playerObject.currentAnamationFrame = 0;
-		}
+		
+		playerObject.currentAnamationFrame = movmentAnamation(playerObject.imageL, playerObject.currentAnamationFrame);
 	}
 	
 	
-	//Math.floor(((mapDetails.changingY)*playerMovement.depth *-1 / mapDetails.pixleSizeY))+mapDetails.checker + playerMovement.YCordenents;
 	var playerXpx = playerMovement.XCordenents * mapDetails.pixleSizeX;
 	mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	var oldXcowards = mapDetails.currentXGrid;
 	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+mapDetails.checkerY + playerMovement.YCordenents;
-	//console.log(mapDetails.currentYGrid, mapDetails.currentXGrid)
-	//console.log(keyCode);
-	if (keyCode == 87){
-	mapDetails.checker = 0;
-	if (playerMovement.speed == 0){	
-		playerMovement.speed = -10;
-		window.requestAnimationFrame(falling);
-	}
-	}
 	
-	if (keyCode == 74){
-		document.getElementById("J").onmousedown();
-	}else if (keyCode == 75){
-		document.getElementById("K").onmousedown();
-	}
-	
-	//document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid) != null
+	//movement functions
+	//check what to do when the next element is reached e.g ignore it interact with it or colide with it
 	var nextElement = map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1];
+	console.log(nextElement);
 	if (nextElement != 0){	
 		if ((nextElement.layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents ){
 			move(playerMovement.movement);		
@@ -275,7 +276,9 @@ function movment(keyCode){
 	}else{
 		move(playerMovement.movement);
 	}
-	//mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
+	
+	//function to allow players to be able to slightly step of platform without falling for better gameplay 
+	
 	var newCowanrds=Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
 	if (oldXcowards != newCowanrds && playerMovement.speed == 0){
 		if (playerMovement.fall<2){
@@ -287,14 +290,50 @@ function movment(keyCode){
 		}
 		
 	}
-	
 }
 
+
+function movment(keyCode){
+	
+	mapDetails.currentXGrid = Math.floor(((mapDetails.changingX + playerMovement.movement)*playerMovement.depth *-1 / mapDetails.pixleSizeX))+mapDetails.checker + playerMovement.XCordenents;
+	mapDetails.currentYGrid = Math.floor(((mapDetails.changingY) / mapDetails.pixleSizeY))+mapDetails.checkerY + playerMovement.YCordenents;
+	mapDetails.checker = 0;
+	mapDetails.checkerY = 1;
+	playerMovement.movement=0;
+	
+	
+	if (keyCode == 68 || keyCode == 65){
+		sideMovement(keyCode);
+	}else if (keyCode == 87){
+		mapDetails.checker = 0;
+		if (playerMovement.speed == 0){	
+			playerMovement.speed = -10;
+			window.requestAnimationFrame(falling);
+		}
+	}else if (keyCode == 74){
+		document.getElementById("J").onmousedown();
+	}else if (keyCode == 75){
+		document.getElementById("K").onmousedown();
+	}else if (keyCode == 32){
+		document.getElementById("space").onmousedown();
+	}
+}
+
+
+//a function to display dialog with no reply options
 function putText(story){
 	var storyBox = document.getElementById("textBox");
-	storyBox.innerHTML = story;
+	if (story.length <= 49){
+		storyBox.innerHTML = story;
+	}else{
+		var end = story.slice(0, 47).lastIndexOf(" ");
+		
+		storyBox.innerHTML = story.slice(0, end) + `<p id="space" onmousedown="putText('` + story.slice(end + 1, story.length) + `')"> &#9660</p>`;
+	}
 	document.getElementsByClassName("answers")[0].innerHTML = "";
 }
+
+//a function to display dialog with reply options
 function putDialog(placement, question, answers){
 	putText(question);
 	var updateHTML = "";

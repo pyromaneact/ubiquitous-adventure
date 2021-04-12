@@ -336,7 +336,7 @@ function meetFreind({
 			question = "hello freind how are you?";
 			freindDialog.X = mapDetails.currentXGrid;
 			freindDialog.Y = mapDetails.currentYGrid;
-			freindDialog.placement = "map["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
+			freindDialog.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
 			console.log(freindDialog.placement);
 			var answers = [["not grate", 'sheLeft();'], ["ah could be worse", 'alright();']];
 			putDialog(freindDialog.placement, question, answers);
@@ -369,7 +369,7 @@ function makePlayer({
 	type = 'player',
 	endX = 1,
 	endY = 2,
-	image = "./game_graphics/Steamarmright.png",
+	image = "./game_graphics/SteamarmRight.png",
 	movementDepth=1, 
 	x = 1, 
 	Y = 11, 
@@ -383,8 +383,8 @@ function makePlayer({
 		endX:endX,
 		endY:endY,
 		image:image,
-		imageR:["./game_graphics/Steamarmright.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"],
-		imageL:["./game_graphics/Steamarmleft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"],
+		imageR:["./game_graphics/SteamarmRight.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"],
+		imageL:["./game_graphics/SteamarmLeft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"],
 		//big thank you to Redwyn and opengameart for creating and supplying these anamations
 		currentAnamationFrame:0,
 		movementDepth:movementDepth, 
