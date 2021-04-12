@@ -30,6 +30,19 @@ var mapDetails={
 	checker:0,
 	checkerY:0
 };
+var playerDetails={
+	inventory:{}
+};
+
+var computerDetails={
+	fear:0,
+	ethics:0,
+	cunning:0,
+	kindness:0,
+	dexterity:0,
+	inventory:{}
+};
+
 
 //a set of variables to controle visual elements 
 
@@ -87,15 +100,18 @@ function resetSqure({
 		transformerY:transformerY, 
 		layerDepth:layerDepth,
 		interactions:interactions,
-		indexMod:indexMod
+		indexMod:indexMod,
+		odds:0
 	};
 	
 	resetSqure.interact = function (){
-		var buttonJ = document.getElementById("J");
-		buttonJ.style = "border-color: #C1292D;";
-		buttonJ.onmousedown=function() {};
-		putText("   ");
-		document.getElementsByClassName("answers")[0].innerHTML=""
+		if (resetSqure.AI != 1){
+			var buttonJ = document.getElementById("J");
+			buttonJ.style = "border-color: #C1292D;";
+			buttonJ.onmousedown=function() {};
+			putText("   ");
+			document.getElementsByClassName("answers")[0].innerHTML=""
+		}
 	};
 	
 	return resetSqure;
@@ -126,22 +142,28 @@ function makekey({
 		layerDepth:layerDepth,
 		interactions:interactions,
 		indexMod:indexMod,
-		ran:0
+		ran:0,
+		odds: 0.8,
 	};
 	key.interact = function (){
-		if (key.ran!=1){
-			var buttonJ = document.getElementById("J");
-			buttonJ.style = "border-color: black";
-			var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
-			buttonJ.onmousedown=function() {
-				keyElement.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png">';
+		if (key.AI != 1){
+			if (key.ran!=1){
 				var buttonJ = document.getElementById("J");
-				buttonJ.style = "border-color: #C1292D;";
-				buttonJ.onmousedown=function() {};
-				putText("  ");
-				key.ran=1;
-			};
-			putText("a key maybey we should pick that up for later try pressing J on it");
+				buttonJ.style = "border-color: black";
+				var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
+				buttonJ.onmousedown=function() {
+					keyElement.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png">';
+					var buttonJ = document.getElementById("J");
+					buttonJ.style = "border-color: #C1292D;";
+					buttonJ.onmousedown=function() {};
+					putText("  ");
+					playerDetails.inventory.key = 1; 
+					key.ran=1;
+				};
+				putText("a key maybey we should pick that up for later try pressing J on it");
+			}
+		}else{
+			computerDetails.inventory.key = 1; 
 		}
 	};
 	return key;
@@ -160,7 +182,7 @@ function makeScrewDriver({
 	layerDepth=1,
 	indexMod=0
 }){
-	var key = {
+	var screwDriver = {
 		type:type,
 		endX:endX,
 		endY:endY,
@@ -172,24 +194,30 @@ function makeScrewDriver({
 		layerDepth:layerDepth,
 		interactions:interactions,
 		indexMod:indexMod,
-		ran:0
+		ran:0,
+		odds: 0.2
 	};
-	key.interact = function (){
-		if (key.ran!=1){
-			var buttonJ = document.getElementById("J");
-			buttonJ.style = "border-color: black";
-			var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
-			buttonJ.onmousedown=function() {
+	screwDriver.interact = function (){
+		if (screwDriver.AI != 1){
+			if (screwDriver.ran!=1){
 				var buttonJ = document.getElementById("J");
-				buttonJ.style = "border-color: #C1292D;";
-				buttonJ.onmousedown=function() {};
-				putText("  ");
-				key.ran=1;
-			};
+				buttonJ.style = "border-color: black";
+				var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
+				buttonJ.onmousedown=function() {
+					var buttonJ = document.getElementById("J");
+					buttonJ.style = "border-color: #C1292D;";
+					buttonJ.onmousedown=function() {};
+					putText("  ");
+					computerDetails.inventory.screwDriver = 1;
+					screwDriver.ran=1;
+				};
 			putText("A Screw Driver maybe we should save that for later! try pressing J on it");
+			}
+		}else{
+			computerDetails.inventory.screwDriver = 1;
 		}
 	};
-	return key;
+	return screwDriver;
 }
 
 function makeCloud({
@@ -332,18 +360,20 @@ function meetFreind({
 		ran:0
 	};
 	freindDialog.interact = function (){
-		if (freindDialog.ran == 0){
-			question = "hello freind how are you?";
-			freindDialog.X = mapDetails.currentXGrid;
-			freindDialog.Y = mapDetails.currentYGrid;
-			freindDialog.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
-			console.log(freindDialog.placement);
-			var answers = [["not grate", 'sheLeft();'], ["ah could be worse", 'alright();']];
-			putDialog(freindDialog.placement, question, answers);
-		}else{
-			putText("hello agin");
+		if (freindDialog.AI != 1){
+			if (freindDialog.ran == 0){
+				question = "hello freind how are you?";
+				freindDialog.X = mapDetails.currentXGrid;
+				freindDialog.Y = mapDetails.currentYGrid;
+				freindDialog.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
+				console.log(freindDialog.placement);
+				var answers = [["not grate", 'sheLeft();', 'fear', 10], ["ah could be worse", 'alright();', 'kindness', 10]];
+				putDialog(freindDialog.placement, question, answers);
+			}else{
+				putText("hello agin");
+			}
 		}
-	}
+	};
 	freindDialog.alright = function (){
 		putText("it all ends in tears");
 		freindDialog.endConvo();

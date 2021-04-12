@@ -63,6 +63,32 @@ function loadMap(map){
 	}
 }
 
+function AILoadMap(map){
+	var YLength = map.length;
+	var XLength =  map[0].length;
+	var interaction = [];
+	for (let XPosition = 0; XPosition < XLength; XPosition++){
+		map.forEach(function(item){
+			if (item[XPosition].interactions == 1){
+				interaction.push(item[XPosition]);
+				interaction[interaction.length - 1].AI=1;
+			}
+		})
+	}
+	return interaction;
+}
+
+function AIRunMap(map){
+	var interactions = AILoadMap(map);
+	interactions.forEach(function(interaction){
+		if (Math.random() < interaction.odds){
+			interaction.interact();
+		}
+	});
+	
+}
+
+
 
 //gameplay/movement setup
 
