@@ -84,6 +84,7 @@ function AIRunMap(map){
 		if (Math.random() < interaction.odds){
 			interaction.interact();
 		}
+		interaction.AI = 0;
 	});
 	
 }
@@ -140,6 +141,7 @@ function movingSetup(){
 
 //a function to jump or playerMovement.fall when necsessery
 function falling(){
+	var map = mapDetails.map2DArray;
 	if (playerMovement.speed<10){
 		playerMovement.speed = playerMovement.speed+0.5;
 	}
@@ -250,7 +252,8 @@ function movmentAnamation(images, currentAnamationFrame){
 function sideMovement(keyCode){
 	
 	movementX = 0;
-	var playerObject = map[playerMovement.YCordenents-1][playerMovement.XCordenents-1];
+	
+	var playerObject = mapDetails.map2DArray[playerMovement.YCordenents-1][playerMovement.XCordenents-1];
 	
 	
 	
@@ -284,8 +287,7 @@ function sideMovement(keyCode){
 	
 	//movement functions
 	//check what to do when the next element is reached e.g ignore it interact with it or colide with it
-	var nextElement = map[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1];
-	console.log(nextElement);
+	var nextElement = mapDetails.map2DArray[mapDetails.currentYGrid-1][mapDetails.currentXGrid-1];
 	if (nextElement != 0){	
 		if ((nextElement.layerDepth != playerMovement.depth) || mapDetails.currentXGrid== playerMovement.XCordenents ){
 			move(playerMovement.movement);		
@@ -364,7 +366,7 @@ function putDialog(placement, question, answers){
 	putText(question);
 	var updateHTML = "";
 	answers.forEach(function(answer){
-		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+ placement + "." + answer[1]+'>' + answer[0] + '</button>';
+		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+ placement + "." + answer[1]+';>' + answer[0] + '</button>';
 	})
 	document.getElementsByClassName("answers")[0].innerHTML = updateHTML;
 }

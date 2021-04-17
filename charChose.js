@@ -85,13 +85,10 @@ function makeDesision({
 		ran:0
 	};
 	desision.abbie = function (){
-		loadMap(map);
-		movingSetup();
-		move(-5*mapDetails.pixleSizeX);
-		putText("");
+		loadForestStart();
 	}
 	desision.turner = function (){
-		putText("turner!");
+		loadCyityStart();
 	}
 	return desision
 }

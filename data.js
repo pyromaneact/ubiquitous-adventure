@@ -1,47 +1,4 @@
 //optinal prameters code (later removed but link might be usfull for clean up) addapted from this stackOverflow thred: https://stackoverflow.com/questions/12797118/how-can-i-declare-optional-function-parameters-in-javascript?fbclid=IwAR2XMH66g0JjiFVgJuBMWBnzsN5agbqAoiahNb1mKIP2a73ONfZ8CJEtzAQ
-	
-//visual setup
-
-var playerMovement={
-	depth:0,
-	HTMLColection:0,
-	HTMLArray:0,
-	XCordenents:0,
-	YCordenents:0,
-	aceleration:0,
-	Xpx:0,
-	Ypx:0,
-	moveSpeed: 10,
-	speed:0,
-	fall:0,
-	movement: 0,
-	mousedownID: -1
-};
-var mapDetails={
-	map2DArray: 0,
-	movingItemsHTMLColection: 0,
-	movingItemsArray: 0,
-	changingX:0,
-	changingY:0,
-	pixleSizeX: window.innerWidth*(1/38),
-	pixleSizeY: 23,
-	currentXGrid:0,
-	currentYGrid:0,
-	checker:0,
-	checkerY:0
-};
-var playerDetails={
-	inventory:{}
-};
-
-var computerDetails={
-	fear:0,
-	ethics:0,
-	cunning:0,
-	kindness:0,
-	dexterity:0,
-	inventory:{}
-};
 
 
 //a set of variables to controle visual elements 
@@ -143,7 +100,7 @@ function makekey({
 		interactions:interactions,
 		indexMod:indexMod,
 		ran:0,
-		odds: 0.8,
+		odds: 0.8
 	};
 	key.interact = function (){
 		if (key.AI != 1){
@@ -343,7 +300,8 @@ function meetFreind({
 	transformerX=0, 
 	transformerY=0, 
 	layerDepth=1,
-	indexMod=0
+	indexMod=0,
+	odds=1
 }){
 	var freindDialog = {
 		type:type,
@@ -357,43 +315,70 @@ function meetFreind({
 		layerDepth:layerDepth,
 		interactions:interactions,
 		indexMod:indexMod,
-		ran:0
+		ran:0,
+		odds:odds
 	};
 	freindDialog.interact = function (){
+		var answers = [["not grate", 'sheLeft()', freindDialog.sheLeft , computerDetails.ethics], ["ah could be worse", 'alright()', freindDialog.sheLeft]];
 		if (freindDialog.AI != 1){
+			
 			if (freindDialog.ran == 0){
 				question = "hello freind how are you?";
 				freindDialog.X = mapDetails.currentXGrid;
 				freindDialog.Y = mapDetails.currentYGrid;
 				freindDialog.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
-				console.log(freindDialog.placement);
-				var answers = [["not grate", 'sheLeft();', 'fear', 10], ["ah could be worse", 'alright();', 'kindness', 10]];
 				putDialog(freindDialog.placement, question, answers);
 			}else{
 				putText("hello agin");
 			}
+		}else{
+			var selection = Math.random();
+			var highest = 0;
+			var action = 0;
+			var backup = 0;
+			answers.forEach(function(answer){
+				if (answer[3] < selection && answer[3] > highest){
+					highest = answer[3];
+					action = answer[2];
+				}else if(answer[3] == null){
+					backup = answer[2];
+				}
+			})
+			if (action == 0){
+				action = backup;
+			}
+			action();
 		}
 	};
 	freindDialog.alright = function (){
-		putText("it all ends in tears");
-		freindDialog.endConvo();
+		if (freindDialog.AI != 1){ 
+			putText("it all ends in tears");
+			freindDialog.endConvo();
+		}else{
+			computerDetails.fear= 1;
+		}
 	}
 	freindDialog.sheLeft = function (){
-		putText("yeah man it is hard right now");
-		freindDialog.endConvo();
+		if (freindDialog.AI != 1){
+			putText("yeah man it is hard right now");
+			freindDialog.endConvo();
+		}else{
+			computerDetails.kindness= 1;
+		}
 	}
 	freindDialog.endConvo= function(){
+		
 		for (var i = 0; i < 7; i++) { 
 			var YCowards = freindDialog.Y -1 - i;
 			var XCowards = freindDialog.X ;
-			var wall = map[YCowards][XCowards];
-			console.log(wall, "cell-" + YCowards + "," + XCowards);
+			var wall = mapDetails.map2DArray[YCowards][XCowards];
 			wall.colitions = 0;
 			freindDialog.ran = 1;
 		}
 	}
 	return freindDialog
 };
+
 
 function makePlayer({
 	type = 'player',
@@ -429,8 +414,56 @@ function makePlayer({
 }
 
 
+function travelLevel({
+	type='parallax-item',
+	endX=1,
+	endY=1,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0
+}){
+	var level = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0,
+		odds: 0.2
+	};
+	level.interact = function (){
+		if (level.AI != 1){
+			var buttonJ = document.getElementById("J");
+			buttonJ.style = "border-color: black";
+			var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
+			buttonJ.onmousedown=function() {
+				var buttonJ = document.getElementById("J");
+				buttonJ.style = "border-color: #C1292D;";
+				buttonJ.onmousedown=function() {};
+				putText("  ");
+				loadCyityStart();
+			}				
+			putText("to go to the cyity press 'J' now ");
+		}else{
+			computerDetails.inventory.level = 1;
+		}
+	};
+	return level;
+}
 
-var map = [
+
+var forest = [
 [makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({}),makewalls({})],
 [makewalls({}),0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({}),makewalls({})],
 [makeGround({}),makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeCloud({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
@@ -442,10 +475,19 @@ var map = [
 [makeGround({}),makeGround({}),makeGround({}),0,makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,makeGround({}),makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),makeGround({}),makeGround({}),0,makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
 [makeGround({}),makeGround({}),makeGround({}),makePlayer({}),makeScrewDriver({}),resetSqure({}),0,0,0,0,0,0,0,0,0,makewalls({}),makeFreind({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
-[makeGround({}),makeGround({}),makeGround({}),0,makewalls({}),resetSqure({}),0,0,0,0,0,0,0,resetSqure({}),meetFreind({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makeGround({})],
+[makeGround({}),makeGround({}),makeGround({}),0,makewalls({}),resetSqure({}),0,0,0,0,0,0,0,resetSqure({}),meetFreind({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,travelLevel({}),makeGround({})],
 [makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})],
 [makeTree({endY:12, endX:7, transformerY:-13*mapDetails.pixleSizeY, movementDepth:1, layerDepth:1}),0,0,0,0,0,0,0,0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,makeTree({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ];
+
+
+function loadForestStart(){
+	playerMovement.movement=0;
+	loadMap(forest);
+	movingSetup();
+	move(-5*mapDetails.pixleSizeX);
+	putText("");
+}
