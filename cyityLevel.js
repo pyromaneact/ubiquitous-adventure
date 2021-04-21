@@ -156,12 +156,58 @@ function makeGround({
 	return ground;
 }
 
+function travelLevel({
+	type='parallax-item',
+	endX=1,
+	endY=1,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0
+}){
+	var level = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0,
+		odds: 0.8
+	};
+	level.interact = function (){
+		if (level.AI != 1){
+			var buttonJ = document.getElementById("J");
+			buttonJ.style = "border-color: black";
+			var keyElement = document.getElementById("cell-"+mapDetails.currentYGrid+","+mapDetails.currentXGrid); 
+			buttonJ.onmousedown=function() {
+				var buttonJ = document.getElementById("J");
+				buttonJ.style = "border-color: #C1292D;";
+				buttonJ.onmousedown=function() {};
+				putText("  ");
+				loadForestEnd();
+			}				
+			putText("to go to the forest press 'J' now ");
+		}else{
+		}
+	};
+	return level;
+}
 
 function makePlayer({
 	type = 'player',
 	endX = 1,
 	endY = 2,
-	image = "./game_graphics/SteamarmRight.png",
+	image = playerDetails.walkingAnamations.imageR[0],
 	movementDepth=1, 
 	x = 1, 
 	Y = 11, 
@@ -175,8 +221,8 @@ function makePlayer({
 		endX:endX,
 		endY:endY,
 		image:image,
-		imageR:["./game_graphics/SteamarmRight.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"],
-		imageL:["./game_graphics/SteamarmLeft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"],
+		imageR:playerDetails.walkingAnamations.imageR,
+		imageL:playerDetails.walkingAnamations.imageL,
 		//big thank you to Redwyn and opengameart for creating and supplying these anamations
 		currentAnamationFrame:0,
 		movementDepth:movementDepth, 
@@ -201,10 +247,10 @@ var cyity = [
 [makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),makePlayer({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,makePlayer({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),travelLevel({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})],
 [makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,0],
 ];
@@ -215,5 +261,13 @@ function loadCyityStart(){
 	loadMap(cyity);
 	movingSetup();
 	move(-2*mapDetails.pixleSizeX);
+	putText("");
+}
+
+function loadCyityEnd(){
+	playerMovement.movement=0;
+	loadMap(cyity);
+	movingSetup();
+	move(-58*mapDetails.pixleSizeX);
 	putText("");
 }

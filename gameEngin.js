@@ -43,7 +43,12 @@ function loadMap(map){
 		for (let XPosition = 1; XPosition <= XLength; XPosition++){
 			if (mapDetails.map2DArray[YPosition-1][XPosition-1].type=== undefined){
 				htmlGrid = htmlGrid + '<div class="parallax-item" id="cell-'+YPosition+','+XPosition+'"></div>';
-			}else{
+			}
+			else{
+				if(mapDetails.map2DArray[YPosition-1][XPosition-1].type=='player'){
+					mapDetails.map2DArray[YPosition-1][XPosition-1].imageR = playerDetails.walkingAnamations.imageR
+					mapDetails.map2DArray[YPosition-1][XPosition-1].imageL = playerDetails.walkingAnamations.imageL
+				}
 				htmlGrid = htmlGrid + '<div class='+mapDetails.map2DArray[YPosition-1][XPosition-1].type+' id="cell-'+YPosition+','+XPosition+'"></div>';
 			}
 		}
@@ -349,21 +354,25 @@ function movment(keyCode){
 
 
 //a function to display dialog with no reply options
-function putText(story){
+function putText(story, placement=0){
+	console.log(placement);
 	var storyBox = document.getElementById("textBox");
 	if (story.length <= 49){
 		storyBox.innerHTML = story;
+		
 	}else{
 		var end = story.slice(0, 47).lastIndexOf(" ");
 		
-		storyBox.innerHTML = story.slice(0, end) + `<p id="space" onmousedown="putText('` + story.slice(end + 1, story.length) + `')"> &#9660</p>`;
+		storyBox.innerHTML = story.slice(0, end) + `<p id="space" onmousedown="putText('` + story.slice(end + 1, story.length) + `',1)"> &#9660</p>`;
 	}
-	document.getElementsByClassName("answers")[0].innerHTML = "";
+	if (placement ==0){
+		document.getElementsByClassName("answers")[0].innerHTML = "";
+	}
 }
 
 //a function to display dialog with reply options
 function putDialog(placement, question, answers){
-	putText(question);
+	putText(question, 1);
 	var updateHTML = "";
 	answers.forEach(function(answer){
 		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+ placement + "." + answer[1]+';>' + answer[0] + '</button>';

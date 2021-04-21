@@ -85,10 +85,18 @@ function makeDesision({
 		ran:0
 	};
 	desision.abbie = function (){
+		playerDetails.walkingAnamations.imageR=["./game_graphics/SteamarmRight.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"];
+		playerDetails.walkingAnamations.imageL=["./game_graphics/SteamarmLeft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"];
 		loadForestStart();
 	}
 	desision.turner = function (){
-		loadCyityStart();
+		forest[10][8]=forest[10][3];
+		forest[10][3]=0;
+		cyity[10][8]=cyity[10][3];
+		cyity[10][3]=0;
+		playerDetails.walkingAnamations.imageR=["./game_graphics/MonocleRight.png","./game_graphics/MonocleRight1.png","./game_graphics/MonocleRight2.png","./game_graphics/MonocleRight3.png","./game_graphics/MonocleRight4.png"];
+		playerDetails.walkingAnamations.imageL=["./game_graphics/MonocleLeft.png","./game_graphics/MonocleLeft1.png","./game_graphics/MonocleLeft2.png","./game_graphics/MonocleLeft3.png","./game_graphics/MonocleLeft4.png"];
+		loadCyityEnd();
 	}
 	return desision
 }
@@ -115,6 +123,8 @@ var choisemap = [
 ]
 
 function choseChar(){
-	//"choisemap["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
-	putDialog("mapDetails.map2DArray[0][0]", "choose your charitor", [["Abbie", 'abbie()'], ["Turner", 'turner()']]);
+	window.addEventListener('keydown', hanndleKeyboredClick);
+	document.addEventListener("mouseup", mouseUp);
+	window.addEventListener('keyup',keyUp);
+	putDialog("mapDetails.map2DArray[0][0]", "press space to see the next sentance     choose your charitor", [["Abbie", 'abbie()'], ["Turner", 'turner()']]);
 }
