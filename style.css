@@ -91,6 +91,8 @@ button{
 	z-index:2000;
 	overflow: auto;
 	color:black;
+	text-align:center;
+	font-size:1.1vw;
 }
 
 #J{
@@ -98,10 +100,9 @@ button{
 	grid-row: 1; 
 	border-radius: 50%;
 }
-#space{
-	
+a{
+	color:white;
 }
-
 .answers{
 	grid-column: 2;
 	grid-row: 2;
