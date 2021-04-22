@@ -219,7 +219,9 @@ function meetWidget({
 		key:1
 	};
 	freindDialog.interact = function (){
-		if (playerDetails.charitor=="abbie"){
+		var player=playerDetails.charitor=="abbie";
+		var ais = freindDialog.AI==1;
+		if (ais!=player){
 			question = "Halt what are you doing in our teroroey, you wil not stop us ";
 			var answers = [["What are you", 'aWhat()', freindDialog.aWhat , computerDetails.hope], ["What do you do", 'helper()', freindDialog.helper]];
 		
@@ -234,18 +236,18 @@ function meetWidget({
 					putText("hello agin");
 				}
 			}else{
-				randomDialog(answer);
+				randomDialog(answers);
 			}
 		}
 	};
 	freindDialog.aWhat = function (){ 
-		question = "Halt what are you doing in our teroroey, you wil not stop us ";
-		var answers = [["What are you", 'aWhat()', freindDialog.aWhat , computerDetails.hope], ["What do you do", 'helper()', freindDialog.helper]];
+		question = "im a tin widget";
+		var answers = [["but like What are you", 'aWhat()', freindDialog.aWhat , computerDetails.hope], ["What do you do", 'helper()', freindDialog.helper]];
 		if (freindDialog.AI != 1){
 			
 			putDialog(freindDialog.placement, question, answers);
 		}else{
-			randomDialog(answer);
+			randomDialog(answers);
 		}
 	}
 	freindDialog.helper = function (){ 
@@ -255,7 +257,7 @@ function meetWidget({
 			
 			putDialog(freindDialog.placement, question, answers);
 		}else{
-			randomDialog(answer);
+			randomDialog(answers);
 		}
 	}
 	
@@ -286,7 +288,7 @@ function meetWidget({
 			
 				putDialog(freindDialog.placement, question, answers);
 			}else{
-				randomDialog(answer);
+				randomDialog(answers);
 			}
 		}else{
 			freindDialog.planed2();
@@ -303,7 +305,7 @@ function meetWidget({
 			
 				putDialog(freindDialog.placement, question, answers);
 			}else{
-				randomDialog(answer);
+				randomDialog(answers);
 			}
 		}else{
 			freindDialog.planed3();
@@ -320,7 +322,7 @@ function meetWidget({
 			
 				putDialog(freindDialog.placement, question, answers);
 			}else{
-				randomDialog(answer);
+				randomDialog(answers);
 			}
 		}else{
 			freindDialog.command();
@@ -378,6 +380,196 @@ function meetWidget({
 	return freindDialog
 };
 
+
+function makeDoor({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0,
+	odds=1
+}){
+	var freindDialog = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0,
+		odds:odds,
+		
+	};
+	freindDialog.interact = function (){
+		var player=playerDetails.charitor=="abbie";
+		var ais = freindDialog.AI==1;
+		if (ais!=player){
+			question = "an entrenct into the lab will you take it ";
+			var answers = [["yes enter", 'enter()', freindDialog.enter ]];
+		
+			if (freindDialog.AI != 1){
+				
+			
+				if (freindDialog.ran == 0){
+					freindDialog.X = mapDetails.currentXGrid;
+					freindDialog.Y = mapDetails.currentYGrid;
+					freindDialog.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
+					
+					
+					putDialog(freindDialog.placement, question, answers);
+				}else{
+					putText("hello agin");
+				}
+			}else{
+				randomDialog(answers);
+			}
+		}
+	};
+	
+	freindDialog.enter = function (){
+		question = "infedell what are you wanting";
+		var answers = [["what you are doing to my pepole", 'answer()', freindDialog.answer, computerDetails.fear],["Move or preper to hurt", 'fight()', freindDialog.fight, computerDetails.hope],["Could i get a tour", 'no()', freindDialog.no]];
+		
+		if (freindDialog.AI != 1){
+			
+			
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answers);
+		}
+	};
+	
+	
+	freindDialog.answer = function (){
+		if (Math.random() < computerDetails.fear){
+			question = "What is nessesery ";
+		}else{
+			question = "Weve made a bomb and you will never stop us";
+		}
+		var answers = [["what", 'fight()', freindDialog.fight, computerDetails.cunning],["nooo you didnt thats not true", 'fight()', freindDialog.fight]];
+		
+		if (freindDialog.AI != 1){
+			
+			
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answers);
+		}
+	};
+	
+	freindDialog.no = function (){
+		
+		question = "no";
+		var answers = [["ok", 'fight()', freindDialog.fight]];
+		
+		if (freindDialog.AI != 1){
+			
+			
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answers);
+		}
+	};
+	
+	freindDialog.fight = function (){
+		question = "the guards come at you ready to attack";
+		var answers = [["fight", 'attack()', freindDialog.attack, computerDetails.cunning],["run", 'run()', freindDialog.run]];
+		
+		if (freindDialog.AI != 1){
+			
+			
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answers);
+		}
+	};
+	
+	freindDialog.run = function (){
+		if (freindDialog.AI != 1){
+			putText("you escaped from the guards what now?");
+		}
+	}
+	
+	
+	freindDialog.attack = function (){
+		putText("attack!!!!");
+	}
+	
+	return freindDialog;
+}
+
+function makevent({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	da=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0,
+	odds=0.8,
+	interactions=1
+}){
+	var vent = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0,
+		odds:odds
+	};
+	
+	vent.interact = function (){
+		var player=playerDetails.charitor=="abbie";
+		var ais = vent.AI==1;
+		if (ais!=player){
+			if (playerDetails.inventory.screwDriver == 1){
+				question = "a vent mabe we should try use the screwDriver on it";
+			
+				var answers = [["open it", 'open()', vent.open]];
+				
+				if (vent.AI != 1){
+			
+					putDialog(vent.placement, question, answers);
+				}else{
+				randomDialog(answers);
+				}
+			}
+		}
+	}
+	
+	vent.ignore = function (){}
+	
+	
+	vent.open = function (){}
+	
+	return vent;
+}
 
 function travelLevel({
 	type='parallax-item',
@@ -473,7 +665,7 @@ var cyity = [
 [makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makeGround({}),0,0,makePlayer({}),0,0,0,0,0,0,0,0,makewalls({}),makeWidget({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),travelLevel({}),0,0,0,0,0,0,0,0,0,meetWidget({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),travelLevel({}),0,0,0,0,0,0,0,0,0,meetWidget({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,resetSqure({}),0,makevent({}),0,resetSqure({}),0,0,0,0,0,0,0,resetSqure({}),0,makeDoor({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})],
 [makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,0],
 ];

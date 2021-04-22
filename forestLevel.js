@@ -165,7 +165,7 @@ function makeScrewDriver({
 					buttonJ.style = "border-color: #C1292D;";
 					buttonJ.onmousedown=function() {};
 					putText("  ");
-					computerDetails.inventory.screwDriver = 1;
+					playerDetails.inventory.screwDriver = 1;
 					screwDriver.ran=1;
 				};
 			putText("A Screw Driver maybe we should save that for later! try pressing J on it");
@@ -319,7 +319,9 @@ function meetFreind({
 		odds:odds
 	};
 	freindDialog.interact = function (){
-		if (playerDetails.charitor=="abbie"){
+		var player=playerDetails.charitor=="abbie";
+		var ais = freindDialog.AI==1;
+		if (ais!=player){
 			question = "I heard they were planning something big this time";
 			var answers = [["How are you feeling", 'fear()', freindDialog.fear , computerDetails.ethics], ["But we are stronger", 'fight()', freindDialog.fight , computerDetails.cunning],["What have you heard", 'theLab()', freindDialog.theLab]];
 		
@@ -450,7 +452,9 @@ function meetFrog({
 		odds:odds
 	};
 	freindDialog.interact = function (){
-		if (playerDetails.charitor=="abbie"){
+		var player=playerDetails.charitor=="abbie";
+		var ais = freindDialog.AI==1;
+		if (ais!=player){
 			question = "The tides of change are coming my friend ";
 			var answers = [["Wit", 'brash()', freindDialog.brash , computerDetails.fear], ["They shall be stoped", 'brash()', freindDialog.brash , computerDetails.cunning],["Your telling me ", 'theSear()', freindDialog.theSear, computerDetails.kindness],["May they be on our side ", 'haste()', freindDialog.haste]];
 		
