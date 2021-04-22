@@ -6,9 +6,6 @@ var playerMovement={
 	HTMLArray:0,
 	XCordenents:0,
 	YCordenents:0,
-	aceleration:0,
-	Xpx:0,
-	Ypx:0,
 	moveSpeed: 10,
 	speed:0,
 	fall:0,
@@ -32,6 +29,7 @@ var mapDetails={
 };
 var playerDetails={
 	inventory:{},
+	charitor:"",
 	walkingAnamations: {
 		imageR:["./game_graphics/SteamarmRight.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"],
 		imageL:["./game_graphics/SteamarmLeft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"]
@@ -43,7 +41,7 @@ var computerDetails={
 	ethics:0,
 	cunning:0,
 	kindness:0,
-	dexterity:0,
+	hope:0,
 	inventory:{}
 };
 

@@ -156,6 +156,229 @@ function makeGround({
 	return ground;
 }
 
+function makeWidget({
+	type='parallax-item',
+	endX = 1,
+	endY = 2,
+	image="./game_graphics/npc_widget_variant_widgetTin_x1_move_png_1354833436.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=0, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0,
+}){
+	var freind = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0
+	}
+	return freind
+}
+
+function meetWidget({
+	type='parallax-item',
+	endX=0,
+	endY=0,
+	image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Transparent_square.svg/768px-Transparent_square.svg.png",
+	movementDepth=1, 
+	colitions=0,
+	interactions=1, 	
+	transformerX=0, 
+	transformerY=0, 
+	layerDepth=1,
+	indexMod=0,
+	odds=1
+}){
+	var freindDialog = {
+		type:type,
+		endX:endX,
+		endY:endY,
+		image:image,
+		movementDepth:movementDepth, 
+		colitions:colitions,
+		transformerX:transformerX, 
+		transformerY:transformerY, 
+		layerDepth:layerDepth,
+		interactions:interactions,
+		indexMod:indexMod,
+		ran:0,
+		odds:odds,
+		password:0,
+		orders:0,
+		key:1
+	};
+	freindDialog.interact = function (){
+		if (playerDetails.charitor=="abbie"){
+			question = "Halt what are you doing in our teroroey, you wil not stop us ";
+			var answers = [["What are you", 'aWhat()', freindDialog.aWhat , computerDetails.hope], ["What do you do", 'helper()', freindDialog.helper]];
+		
+			if (freindDialog.AI != 1){
+			
+				if (freindDialog.ran == 0){
+					freindDialog.X = mapDetails.currentXGrid;
+					freindDialog.Y = mapDetails.currentYGrid;
+					freindDialog.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
+					putDialog(freindDialog.placement, question, answers);
+				}else{
+					putText("hello agin");
+				}
+			}else{
+				randomDialog(answer);
+			}
+		}
+	};
+	freindDialog.aWhat = function (){ 
+		question = "Halt what are you doing in our teroroey, you wil not stop us ";
+		var answers = [["What are you", 'aWhat()', freindDialog.aWhat , computerDetails.hope], ["What do you do", 'helper()', freindDialog.helper]];
+		if (freindDialog.AI != 1){
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answer);
+		}
+	}
+	freindDialog.helper = function (){ 
+		question = "I am a robotic helper im here to help ";
+		var answers = [["Well what is being planed", 'planed1()', freindDialog.planed1 , computerDetails.hope], ["Can i get a tour", 'tour()', freindDialog.tour , computerDetails.kindness],["What is up with this place", 'question()', freindDialog.question]];
+		if (freindDialog.AI != 1){
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answer);
+		}
+	}
+	
+	freindDialog.tour = function (){ 
+		if (freindDialog.AI != 1){
+			putText("Just go stragit on and you will see all its a 2d plane");
+			freindDialog.endConvo();
+		}
+	}
+	
+	freindDialog.question = function (){ 
+		if (freindDialog.AI != 1){
+			putText("Ahhh the golden question step right a head and see");
+			freindDialog.endConvo();
+		}
+	}
+	
+	freindDialog.planed1 = function (){ 
+		if (freindDialog.key == 1){
+			question = "i need a key to revel that";
+			
+			var answers = [["ohh one second", 'end()', freindDialog.end , computerDetails.fear],["is there another option", 'planed2()', freindDialog.planed2]];
+			if (playerDetails.inventory.key == 1){
+				answers.unshift(["you mean this one", 'keys()', freindDialog.keys , computerDetails.cunning]);
+			}
+			
+			if (freindDialog.AI != 1){
+			
+				putDialog(freindDialog.placement, question, answers);
+			}else{
+				randomDialog(answer);
+			}
+		}else{
+			freindDialog.planed2();
+		}
+	}
+	
+	freindDialog.planed2 = function (){ 
+		if (freindDialog.password == 1){
+			question = "a  password will revel that";
+			
+			var answers = [["the tides of change", 'keys()', freindDialog.keys , computerDetails.cunning],["the tides of change", 'failed()', freindDialog.failed() , computerDetails.cunning]["the dirty scum", 'failed()', freindDialog.failed]];
+			
+			if (freindDialog.AI != 1){
+			
+				putDialog(freindDialog.placement, question, answers);
+			}else{
+				randomDialog(answer);
+			}
+		}else{
+			freindDialog.planed3();
+		}
+	}
+	
+	freindDialog.planed3 = function (){ 
+		if (freindDialog.password == 1){
+			question = "a  password will revel that";
+			
+			var answers = [["the tides of change", 'keys()', freindDialog.keys , computerDetails.cunning],["the tides of change", 'failed()', freindDialog.failed() , computerDetails.cunning]["the dirty scum", 'failed()', freindDialog.failed]];
+			
+			if (freindDialog.AI != 1){
+			
+				putDialog(freindDialog.placement, question, answers);
+			}else{
+				randomDialog(answer);
+			}
+		}else{
+			freindDialog.command();
+		}
+	}
+	
+	
+	freindDialog.command = function (){ 
+		if (freindDialog.AI != 1){
+			if (freindDialog.orders == 1){
+				putText("oh my bad on you go you see we are making a nuke in the lab we can kill evryone with it");
+				freindDialog.endConvo();
+			}else{
+				putText("i cant tell you that nice try tho");
+				freindDialog.endConvo();
+			}
+		}
+	}
+	
+	
+	freindDialog.failed = function (){
+		if (freindDialog.AI != 1){
+			putText("hahah no");
+		}
+		
+		endGame();
+	}
+	
+	
+	
+	freindDialog.end = function (){
+		if (freindDialog.AI != 1){
+			putText("");
+		}
+	}
+	
+	freindDialog.keys = function (){
+		if (freindDialog.AI != 1){
+			putText("oh my bad on you go you see we are making a nuke in the lab we can kill evryone with it");
+			freindDialog.endConvo();
+		}
+	}
+	
+	
+	freindDialog.endConvo= function(){
+		
+		for (var i = 0; i < 7; i++) { 
+			var YCowards = freindDialog.Y -1 - i;
+			var XCowards = freindDialog.X ;
+			var wall = mapDetails.map2DArray[YCowards][XCowards];
+			wall.colitions = 0;
+			freindDialog.ran = 1;
+		}
+	}
+	return freindDialog
+};
+
+
 function travelLevel({
 	type='parallax-item',
 	endX=1,
@@ -244,19 +467,20 @@ var cyity = [
 [makewalls({}),makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({}),makewalls({})],
 [makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),0,0,makePlayer({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
-[makeGround({}),travelLevel({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makewalls({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,0,0,0,0,0,0,0,0,0,makewalls({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),0,0,makePlayer({}),0,0,0,0,0,0,0,0,makewalls({}),makeWidget({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
+[makeGround({}),travelLevel({}),0,0,0,0,0,0,0,0,0,meetWidget({}),makewalls({}),0,resetSqure({}),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,makewalls({})],
 [makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({}),makeGround({})],
 [makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,makeSkyscraper1({}),0,makeSkyscraper2({}),0,0],
 ];
 
 
 function loadCyityStart(){
+	playerMovement.movement=0;
 	mapDetails.changingX=0;
 	loadMap(cyity);
 	movingSetup();
@@ -266,6 +490,7 @@ function loadCyityStart(){
 
 function loadCyityEnd(){
 	playerMovement.movement=0;
+	mapDetails.changingX=0;
 	loadMap(cyity);
 	movingSetup();
 	move(-58*mapDetails.pixleSizeX);

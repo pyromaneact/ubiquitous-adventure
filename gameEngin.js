@@ -187,7 +187,9 @@ function falling(){
 
 //a function to insure that the player gose right up to an object before stoping
 function colide(){
+	
 	necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
+	console.log("(" + playerMovement.movement + "/" + playerMovement.moveSpeed + ")* ((" + playerMovement.XCordenents + "-"+ mapDetails.currentXGrid+" - 1)*"+mapDetails.pixleSizeX+")"+"="+necesseryShift);
 		if (necesseryShift > 0){
 			necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* (( mapDetails.currentXGrid - playerMovement.XCordenents - 1)*mapDetails.pixleSizeX);
 			mapDetails.changingX = necesseryShift;
@@ -266,7 +268,6 @@ function sideMovement(keyCode){
 	
 	//set ib nessesery varables for runing movement functions
 	if (keyCode == 68) {
-		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed * -1;
 		mapDetails.checker = 1;
 		movementX = 1;
@@ -276,7 +277,6 @@ function sideMovement(keyCode){
 		
 		
 	}else if (keyCode == 65) {
-		playerMovement.aceleration = 1;
 		playerMovement.movement= playerMovement.moveSpeed;
 		mapDetails.checker = 0;
 		movementX = 1;
@@ -352,10 +352,12 @@ function movment(keyCode){
 	}
 }
 
+function modifyBehavour(behavour,number){
+	return behavour+((1-behavour)/number);
+}
 
 //a function to display dialog with no reply options
 function putText(story, placement=0){
-	console.log(placement);
 	var storyBox = document.getElementById("textBox");
 	if (story.length <= 49){
 		storyBox.innerHTML = story;
@@ -378,4 +380,27 @@ function putDialog(placement, question, answers){
 		updateHTML = updateHTML + '<button id="answerBox1" onmousedown='+ placement + "." + answer[1]+';>' + answer[0] + '</button>';
 	})
 	document.getElementsByClassName("answers")[0].innerHTML = updateHTML;
+}
+
+function randomDialog(answer){
+	var selection = Math.random();
+			var highest = 0;
+			var action = 0;
+			var backup = 0;
+			answers.forEach(function(answer){
+				if (answer[3] < selection && answer[3] > highest){
+					highest = answer[3];
+					action = answer[2];
+				}else if(answer[3] == null){
+					backup = answer[2];
+				}
+			})
+			if (action == 0){
+				action = backup;
+			}
+			action();
+}
+
+function endGame(){
+	
 }
