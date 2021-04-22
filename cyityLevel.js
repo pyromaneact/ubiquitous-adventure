@@ -566,7 +566,23 @@ function makevent({
 	vent.ignore = function (){}
 	
 	
-	vent.open = function (){}
+	vent.open = function (){
+		question = "there infront of you a doomsday devise that could end the war for everyone but at what cost";
+		var answers = [["sabotash it ", 'sabotash()', freindDialog.sabotash, computerDetails.cunning],["leave it and confront turner", 'turner()', freindDialog.turner, computerDetails.hope],["steal it", 'steal()', freindDialog.steal]];
+		
+		if (freindDialog.AI != 1){
+			
+			
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answers);
+		}
+	};
+	
+	vent.sabotash = function (){};
+	vent.turner = function (){};
+	vent.steal = function (){};
 	
 	return vent;
 }
