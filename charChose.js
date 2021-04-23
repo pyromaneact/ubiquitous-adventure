@@ -85,12 +85,25 @@ function makeDesision({
 		ran:0
 	};
 	desision.abbie = function (){
+		computerDetails.fear=0.3;
+		computerDetails.ethics=0.1;
+		computerDetails.cunning=0.7;
+		computerDetails.kindness=0.2;
+		computerDetails.hope=0.4;
+		AIRunMap(cyity);
 		playerDetails.charitor="abbie";
 		playerDetails.walkingAnamations.imageR=["./game_graphics/SteamarmRight.png","./game_graphics/SteamarmRight1.png","./game_graphics/SteamarmRight2.png","./game_graphics/SteamarmRight3.png","./game_graphics/SteamarmRight4.png"];
 		playerDetails.walkingAnamations.imageL=["./game_graphics/SteamarmLeft.png","./game_graphics/SteamarmLeft1.png","./game_graphics/SteamarmLeft2.png","./game_graphics/SteamarmLeft3.png","./game_graphics/SteamarmLeft4.png"];
 		loadForestStart();
+		
 	}
 	desision.turner = function (){
+		computerDetails.fear=0.2;
+		computerDetails.ethics=0.7;
+		computerDetails.cunning=0.4;
+		computerDetails.kindness=0.6;
+		computerDetails.hope=0.5;
+		AIRunMap(forest);
 		playerDetails.charitor="turner";
 		forest[10][8]=forest[10][3];
 		forest[10][3]=0;
@@ -102,6 +115,9 @@ function makeDesision({
 	}
 	return desision
 }
+
+
+	
 
 
 var choisemap = [

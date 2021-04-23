@@ -189,7 +189,6 @@ function falling(){
 function colide(){
 	
 	necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* ((playerMovement.XCordenents - mapDetails.currentXGrid - 1)*mapDetails.pixleSizeX);
-	console.log("(" + playerMovement.movement + "/" + playerMovement.moveSpeed + ")* ((" + playerMovement.XCordenents + "-"+ mapDetails.currentXGrid+" - 1)*"+mapDetails.pixleSizeX+")"+"="+necesseryShift);
 		if (necesseryShift > 0){
 			necesseryShift = (playerMovement.movement/playerMovement.moveSpeed)* (( mapDetails.currentXGrid - playerMovement.XCordenents - 1)*mapDetails.pixleSizeX);
 			mapDetails.changingX = necesseryShift;
@@ -236,7 +235,6 @@ function mouseUp() {
 }
 
 function keyUp(click) {
-	//console.log(click.keyCode)
 	if (click.keyCode != 87){
 		mouseUp()
 	}
@@ -382,18 +380,22 @@ function putDialog(placement, question, answers){
 	document.getElementsByClassName("answers")[0].innerHTML = updateHTML;
 }
 
-function randomDialog(answer){
+function randomDialog(answers){
 	var selection = Math.random();
 			var highest = 0;
 			var action = 0;
-			var backup = 0;
+			try {
+				var backup = answers[answers.length-1][2];
+			}
+			catch(err){ var backup = answers[0][2]; }
 			answers.forEach(function(answer){
-				if (answer[3] < selection && answer[3] > highest){
-					highest = answer[3];
-					action = answer[2];
-				}else if(answer[3] == null){
-					backup = answer[2];
+				try {
+					if (answer[3] < selection && answer[3] > highest){
+						highest = answer[3];
+						action = answer[2];
+					}
 				}
+				catch(err){  }
 			})
 			if (action == 0){
 				action = backup;

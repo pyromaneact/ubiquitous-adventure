@@ -336,7 +336,7 @@ function meetFreind({
 					putText("hello agin");
 				}
 			}else{
-				randomDialog(answer);
+				randomDialog(answers);
 			}
 		}
 	};
@@ -365,7 +365,7 @@ function meetFreind({
 			
 			putDialog(freindDialog.placement, question, answers);
 		}else{
-			randomDialog(answer);
+			randomDialog(answers);
 		}
 	}
 	
@@ -469,7 +469,7 @@ function meetFrog({
 					putText("hello agin");
 				}
 			}else{
-				randomDialog(answer);
+				randomDialog(answers);
 			}
 		}
 	};

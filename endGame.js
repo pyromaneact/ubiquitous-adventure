@@ -124,7 +124,7 @@ function makeDesision({
 		putDialog("mapDetails.map2DArray[0][0]", question, answer);
 	}
 	desision.realWinner = function (){
-		desision.endAbbie()
+		putText("you know what you win ");
 	}
 	
 	desision.forr = function (){

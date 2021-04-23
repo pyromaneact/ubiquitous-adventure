@@ -10,6 +10,7 @@
 	<script	src="./charChose.js"></script>
 	<script	src="./endGame.js"></script>
 	<script	src="./gameEngin.js"></script>
+	<script	src="./JWT.js"></script>
 	
 </head>
 <body>
@@ -36,8 +37,8 @@
 		<button id="K" type="button" style="grid-column: 2; grid-row: 2; border-radius: 50%;">K</button> 
 	</div>
 </div>
-	
-<h6>save/load Game</h6><a href="index.html"><h5>story so far</h5></a>
+<p id="myInput"></p>
+<h6 onclick="saveGame()">save/load Game</h6><a href="index.html"><h5>story so far</h5></a>
 	
 	<script>
 		loadMap(choisemap);
