@@ -402,7 +402,3 @@ function randomDialog(answers){
 			}
 			action();
 }
-
-function donothing(){
-	
-}

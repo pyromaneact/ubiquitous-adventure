@@ -472,6 +472,7 @@ function meetWidgetTurrner({
 		if (freindDialog.AI != 1){
 			putText("good choice");
 			freindDialog.endConvo();
+			endGame();
 		}
 	}
 	
@@ -480,6 +481,7 @@ function meetWidgetTurrner({
 		if (freindDialog.AI != 1){
 			putText("good choice");
 			freindDialog.endConvo();
+			endGame();
 		}
 	}
 	
@@ -487,6 +489,7 @@ function meetWidgetTurrner({
 		if (freindDialog.AI != 1){
 			putText("if your sure");
 			freindDialog.endConvo();
+			endGame();
 		}
 	}
 	
@@ -509,6 +512,7 @@ function meetWidgetTurrner({
 	
 	return freindDialog
 };
+
 function makeDoor({
 	type='parallax-item',
 	endX=0,
@@ -635,15 +639,22 @@ function makeDoor({
 	
 	
 	freindDialog.attack = function (){
+		
 		if (Math.random() < 0.3){
-			question = "you loose you can only watch as the guards bind you up";
-			answer = [["ok", 'loose()']]
-			putDialog(freindDialog.placement, question, answer);
+			if (freindDialog.AI != 1){
+				question = "you loose you can only watch as the guards bind you up";
+				answer = [["ok", 'loose()']]
+				putDialog(freindDialog.placement, question, answer);
+			}
 			
 		}else{
 			question = "you win you can move forward to the next room";
 			answer = [["ok", 'win()']]
-			putDialog(freindDialog.placement, question, answer);
+			if (freindDialog.AI != 1){
+				putDialog(freindDialog.placement, question, answer);
+			}else{
+				randomDialog(answer);
+			}
 		}
 	}
 	freindDialog.loose = function (){
@@ -664,18 +675,24 @@ function makeDoor({
 	};
 	
 	freindDialog.sabotash = function (){
-		putText("you sabotash the wepon so it will destroy the host area");
 		doomsdayDetails.sabotage=1;
-		endGame();
+		if (freindDialog.AI != 1){
+			putText("you sabotash the wepon so it will destroy the host area");
+			endGame();
+		}
 	};
 	freindDialog.turner = function (){
-		putText("you leave to go find turner");
-		endGame();
+		if (freindDialog.AI != 1){
+			putText("you leave to go find turner");
+			endGame();
+		}
 	};
 	freindDialog.steal = function (){
-		putText("you steal the wepon it is yours to do with how you wish");
 		doomsdayDetails.owner="abbie";
-		endGame();
+		if (freindDialog.AI != 1){
+			putText("you steal the wepon it is yours to do with how you wish");
+			endGame();
+		}
 	};
 	
 	

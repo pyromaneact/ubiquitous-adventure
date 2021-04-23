@@ -134,6 +134,7 @@ function makeDesision({
 	}
 	
 	desision.friends = function (){
+		computerDetails.kindness= modifyBehavour(computerDetails.kindness,2);
 		desision.endAbbie();
 	}
 	desision.mercy = function (){
@@ -142,6 +143,27 @@ function makeDesision({
 	desision.hell = function (){
 		desision.endAbbie();
 	}
+	
+	
+	desision.fun = function (){
+		question = "pepole are dieing you think this is fun";
+		answer = [["i can show you pepole dieing", 'endTurnner()'], ["war completes us", 'completes()'],["comon you love this", 'love()']]
+		putDialog("mapDetails.map2DArray[0][0]", question, answer);
+	}
+	
+	desision.completes = function (){
+		question = "no it tears everything down and away you distry things";
+		answer = [["what like this", 'endTurnner()'], ["and youve not killed?", 'love()']]
+		putDialog("mapDetails.map2DArray[0][0]", question, answer);
+	}
+	
+	desision.love = function (){
+		question = "that dose not matter things will end now";
+		answer = [["ok then fine", 'endTurnner()']]
+		putDialog("mapDetails.map2DArray[0][0]", question, answer);
+	}
+	
+	
 	
 	desision.endAbbie = function (){
 		if (doomsdayDetails.owner=="abbie"){
@@ -153,6 +175,22 @@ function makeDesision({
 				 desision.dontLanch();
 			 }else{
 				 desision.lanchTurrner();
+			 }
+			 
+		}
+		
+	}
+	
+	desision.endTurnner = function (){
+		if (doomsdayDetails.owner!="abbie"){
+			question = "will you lanch the nuke?";
+			answer = [["yes", 'lanchTurrner()'], ["no", 'dontLanch()']]
+			putDialog("mapDetails.map2DArray[0][0]", question, answer);
+		}else{
+			 if (Math.random() < computerDetails.kindness){
+				 desision.dontLanch();
+			 }else{
+				 desision.lanchAbbie();
 			 }
 			 
 		}
@@ -208,9 +246,17 @@ function endGame(){
 	window.addEventListener('keydown', hanndleKeyboredClick);
 	document.addEventListener("mouseup", mouseUp);
 	window.addEventListener('keyup',keyUp);
-	question = "Ill admit it was a valent effort almost had me worried";
-	answer = [["Its not over yet ", 'itIs()'], ["Yeah I had to try ", 'cute()'],["Oh you don't know do you  ", 'what()'],["Thank you", 'forr()']]
-	putDialog("mapDetails.map2DArray[0][0]", question, answer);
+	
+	if (playerDetails.charitor=="abbie"){
+		question = "Ill admit it was a valent effort almost had me worried";
+		answer = [["Its not over yet ", 'itIs()'], ["Yeah I had to try ", 'cute()'],["Oh you don't know do you  ", 'what()'],["Thank you", 'forr()']]
+		putDialog("mapDetails.map2DArray[0][0]", question, answer);
+	}else{
+		AIRunMap(cyity);
+		question = "its over turnner";
+		answer = [["oh yes it is for you", 'endTurnner()'], ["why stop the fun now", 'fun()'],["now we will see who is the victor", 'endTurnner()']]
+		putDialog("mapDetails.map2DArray[0][0]", question, answer);
+	}
 
 	
 }
