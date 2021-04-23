@@ -507,8 +507,50 @@ function makeDoor({
 	
 	
 	freindDialog.attack = function (){
-		putText("attack!!!!");
+		if (Math.random() < 0.3){
+			question = "you loose you can only watch as the guards bind you up";
+			answer = [["ok", 'loose()']]
+			putDialog(freindDialog.placement, question, answer);
+			
+		}else{
+			question = "you win you can move forward to the next room";
+			answer = [["ok", 'win()']]
+			putDialog(freindDialog.placement, question, answer);
+		}
 	}
+	freindDialog.loose = function (){
+		endGame();
+	}
+	freindDialog.win = function (){
+		question = "there infront of you a doomsday devise that could end the war for everyone but at what cost";
+		var answers = [["sabotash it ", 'sabotash()', freindDialog.sabotash, computerDetails.cunning],["leave it and confront turner", 'turner()', freindDialog.turner, computerDetails.hope],["steal it", 'steal()', freindDialog.steal]];
+		
+		if (freindDialog.AI != 1){
+			
+			
+			
+			putDialog(freindDialog.placement, question, answers);
+		}else{
+			randomDialog(answers);
+		}
+	};
+	
+	freindDialog.sabotash = function (){
+		putText("you sabotash the wepon so it will destroy the host area");
+		doomsdayDetails.sabotage=1;
+		endGame();
+	};
+	freindDialog.turner = function (){
+		putText("you leave to go find turner");
+		endGame();
+	};
+	freindDialog.steal = function (){
+		putText("you steal the wepon it is yours to do with how you wish");
+		doomsdayDetails.owner="abbie";
+		endGame();
+	};
+	
+	
 	
 	return freindDialog;
 }
@@ -548,10 +590,13 @@ function makevent({
 		var player=playerDetails.charitor=="abbie";
 		var ais = vent.AI==1;
 		if (ais!=player){
+			vent.X = mapDetails.currentXGrid;
+			vent.Y = mapDetails.currentYGrid;
+			vent.placement = "mapDetails.map2DArray["+ (mapDetails.currentYGrid-1).toString() +"][" + (mapDetails.currentXGrid-1).toString() +"]";
 			if (playerDetails.inventory.screwDriver == 1){
 				question = "a vent mabe we should try use the screwDriver on it";
 			
-				var answers = [["open it", 'open()', vent.open]];
+				var answers = [["open it", 'opening()', vent.opening]];
 				
 				if (vent.AI != 1){
 			
@@ -566,23 +611,34 @@ function makevent({
 	vent.ignore = function (){}
 	
 	
-	vent.open = function (){
+	vent.opening = function (){
 		question = "there infront of you a doomsday devise that could end the war for everyone but at what cost";
-		var answers = [["sabotash it ", 'sabotash()', freindDialog.sabotash, computerDetails.cunning],["leave it and confront turner", 'turner()', freindDialog.turner, computerDetails.hope],["steal it", 'steal()', freindDialog.steal]];
+		var answers = [["sabotash it ", 'sabotash()', vent.sabotash, computerDetails.cunning],["leave it and confront turner", 'turner()', vent.turner, computerDetails.hope],["steal it", 'steal()', vent.steal]];
 		
-		if (freindDialog.AI != 1){
+		if (vent.AI != 1){
 			
 			
 			
-			putDialog(freindDialog.placement, question, answers);
+			putDialog(vent.placement, question, answers);
 		}else{
 			randomDialog(answers);
 		}
 	};
 	
-	vent.sabotash = function (){};
-	vent.turner = function (){};
-	vent.steal = function (){};
+	vent.sabotash = function (){
+		putText("you sabotash the wepon so it will destroy the host area");
+		doomsdayDetails.sabotage=1;
+		endGame();
+	};
+	vent.turner = function (){
+		putText("you leave to go find turner");
+		endGame();
+	};
+	vent.steal = function (){
+		putText("you steal the wepon it is yours to do with how you wish");
+		doomsdayDetails.owner="abbie";
+		endGame();
+	};
 	
 	return vent;
 }

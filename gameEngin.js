@@ -401,6 +401,6 @@ function randomDialog(answer){
 			action();
 }
 
-function endGame(){
+function donothing(){
 	
 }

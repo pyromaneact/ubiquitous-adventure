@@ -13,6 +13,11 @@ var playerMovement={
 	mousedownID: -1
 };
 
+var doomsdayDetails={
+	owner:"turner",
+	sabotage:0
+}
+
 
 var mapDetails={
 	map2DArray: 0,
