@@ -6,8 +6,11 @@
 	<link rel="stylesheet" href="./style.css">
 	<script	src="./data.js"></script>
 	<script	src="./forestLevel.js"></script>
+	<script	src="./cyityLevel.js"></script>
 	<script	src="./charChose.js"></script>
+	<script	src="./endGame.js"></script>
 	<script	src="./gameEngin.js"></script>
+	<script	src="./JWT.js"></script>
 	
 </head>
 <body>
@@ -20,10 +23,10 @@
 	
 <div class="buttons"> 
 	<div class="movementButtons">
-		<button type="button" onmousedown=" movment(87)" style="grid-column: 2; grid-row: 1;">W</button> 
-		<button type="button" onmousedown="move(1); hanndleButtonAClick()" onmouseup="mouseup()" style="grid-column: 1; grid-row: 2;">A</button> 
+		<button type="button" onmousedown="movment(87)" style="grid-column: 2; grid-row: 1;">W</button> 
+		<button type="button" onmousedown="hanndleButtonAClick()" onmouseup="mouseup()" style="grid-column: 1; grid-row: 2;">A</button> 
 		<button type="button"style="grid-column: 2; grid-row: 2;">S</button> 
-		<button type="button"onmousedown="move(-1); hanndleButtonDClick()" onmouseup="mouseup()" style="grid-column: 3; grid-row: 2;">D</button> 
+		<button type="button"onmousedown="hanndleButtonDClick()" onmouseup="mouseup()" style="grid-column: 3; grid-row: 2;">D</button> 
 	</div>
 	 <p id="textBox">&#9660</p>
 	 <div class="answers">
@@ -34,10 +37,12 @@
 		<button id="K" type="button" style="grid-column: 2; grid-row: 2; border-radius: 50%;">K</button> 
 	</div>
 </div>
+<p id="myInput"></p>
+<h6 onclick="saveGame()">save/load Game</h6><a href="index.html"><h5>story so far</h5></a>
 	
 	<script>
-		loadMap(forest);
-		loadForestStart();
+		loadMap(choisemap);
+		choseChar();
 	</script>
 </body>
 </html>
