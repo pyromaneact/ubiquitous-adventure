@@ -210,7 +210,7 @@ function makeTree({
 	type='parallax-item',
 	endX=2,
 	endY=3,
-	image="https://www.onlygfx.com/wp-content/uploads/2017/06/watercolor-tree-5.png",
+	image="https://i.pinimg.com/originals/ea/3c/b6/ea3cb69a16924b2f108a83bd88b8e686.png",
 	movementDepth=0.7, 
 	transformerX=40, 
 	transformerY=-4*mapDetails.pixleSizeY,
